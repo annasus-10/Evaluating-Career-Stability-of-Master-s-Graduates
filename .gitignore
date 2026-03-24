@@ -12,3 +12,5 @@ wheels/
 # Datasets
 *.csv
 *.xlsx
+
+.DS_Store
