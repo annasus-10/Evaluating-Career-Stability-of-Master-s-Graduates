@@ -46,7 +46,47 @@ Why this stage matters:
 
 ---
 
-## 3. Run Summary Table (Scanned from notebook result)
+## 3. Main Showcase: How Text Turns Into Career Matches
+
+### 3.1 Before and After Cleaning (Real rows from output)
+
+| program_name | degree_source (before) | degree_final (after) |
+|---|---|---|
+| Information Technology (ITM) - 21 Month | information technology itm 21 month | information technology itm |
+| Information Technology - 12 Month | information technology 12 month | information technology |
+| Public Administration (Online pathway) | public administration online pathway | public administration |
+| Tourism (Tourism Stream) | tourism tourism stream | tourism tourism |
+| Teaching - Primary R-7 | teaching primary r 7 | teaching primary r |
+| Economics by coursework | economics by coursework | economics by |
+
+This is the key transition you wanted to show: noisy degree text is normalized first, then semantic mapping is done on degree_final.
+
+### 3.2 How Sentence Transformer Mapping Works
+1. Input text to model: degree_final labels and occupation/career labels.
+2. all-MiniLM-L6-v2 converts each text into an embedding vector.
+3. Similarity is computed with cosine similarity:
+
+$$
+	ext{sim}(d, c)=\frac{d\cdot c}{\|d\|\|c\|}
+$$
+
+4. Keep candidates where similarity >= 0.30.
+5. Reattach candidates to each program row.
+
+### 3.3 Example: From Cleaned Degree to Career Match
+
+| degree_final | matched career | similarity |
+|---|---|---:|
+| information technology itm | computer and information systems managers | 0.6170 |
+| information technology | computer and information research scientists | 0.6339 |
+| public administration | administrative services managers | 0.6438 |
+| tourism tourism | tour and travel guides | 0.5548 |
+| teaching primary r | secondary school teachers | 0.4703 |
+| economics by | economists | 0.7386 |
+
+---
+
+## 4. Run Summary Table (Scanned from notebook result)
 
 | Metric | Value |
 |---|---:|
@@ -64,7 +104,7 @@ Why this stage matters:
 
 ---
 
-## 4. Threshold Sensitivity Table (Scanned from notebook result)
+## 5. Threshold Sensitivity Table (Scanned from notebook result)
 
 | threshold | candidate_rows | unique_degrees | unique_careers | avg_candidates_per_degree |
 |---:|---:|---:|---:|---:|
@@ -80,7 +120,7 @@ Interpretation:
 
 ---
 
-## 5. Final Program-Level Mapping Sample (Scanned from notebook result)
+## 6. Final Program-Level Mapping Sample (Scanned from notebook result)
 
 | program_name | program_type | degree_source | degree_final | career_match | similarity |
 |---|---|---|---|---|---:|
@@ -92,7 +132,7 @@ Interpretation:
 
 ---
 
-## 6. Key Talking Points for Slides
+## 7. Key Talking Points for Slides
 - The mapping layer is the integration bridge between program data and career outcomes.
 - Cleaning quality directly improves semantic matching quality.
 - Sentence Transformer gives stronger semantic behavior than basic TF-IDF in this dataset.
@@ -101,11 +141,11 @@ Interpretation:
 
 ---
 
-## 7. Suggested Slide Order
+## 8. Suggested Slide Order
 1. Problem and objective
 2. Data sources
-3. Cleaning pipeline (clean.ipynb)
-4. Semantic mapping pipeline (map.ipynb)
+3. Main showcase: before -> after cleaning
+4. Main showcase: Sentence Transformer flow (embedding + cosine + threshold)
 5. Run summary table
 6. Threshold sensitivity table
 7. Program-level sample outputs
