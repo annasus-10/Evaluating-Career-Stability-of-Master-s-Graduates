@@ -44,6 +44,18 @@ Why this stage matters:
 - Restores business context (program_name + program_type).
 - Makes results ready for dashboard display and next-stage recommendation logic.
 
+### Stage D: O*NET Skill and Technology Enrichment
+1. Normalize O*NET-SOC Code to SOC6 (drop decimal suffix).
+2. Join SOC6 to project occupation universe from automation data.
+3. Build occupation-skill bridge from O*NET Skills, Knowledge, Abilities, and Technology Skills.
+4. Aggregate into skill-demand summary for dashboard charts.
+5. Track coverage so occupations with zero skills are visible.
+
+Why this stage matters:
+- Adds career-specific skill context beyond semantic title matching.
+- Enables skill-demand and technology-demand views in the dashboard.
+- Preserves "no skill mapped yet" occupations for transparency.
+
 ---
 
 ## 3. Main Showcase: How Text Turns Into Career Matches
@@ -132,16 +144,48 @@ Interpretation:
 
 ---
 
-## 7. Key Talking Points for Slides
-- The mapping layer is the integration bridge between program data and career outcomes.
-- Cleaning quality directly improves semantic matching quality.
-- Sentence Transformer gives stronger semantic behavior than basic TF-IDF in this dataset.
-- Thresholded candidates create a flexible pool for downstream ranking.
-- This is a baseline integration stage before adding GCSI and final recommendation scoring.
+## 7. New Skill and Technology Layer (O*NET)
+
+### 7.1 New Outputs Added
+
+| File | Role |
+|---|---|
+| datasets/mapping/occupation_base_soc.csv | Occupation base dimension (all SOC careers) |
+| datasets/mapping/occupation_skill_bridge_onet.csv | Unified occupation-to-skill bridge |
+| datasets/mapping/skill_demand_summary_onet.csv | Aggregated skill demand metrics |
+| datasets/mapping/occupation_skill_coverage_onet.csv | Coverage QA (has_skills and skill_row_count) |
+| datasets/mapping/occupation_technology_skills_onet.csv | Detailed technology skills per occupation |
+| datasets/mapping/occupation_technology_skills_onet_summary.csv | Occupation-level technology summary |
+
+### 7.2 Coverage Snapshot
+
+| Metric | Value |
+|---|---:|
+| occupation_base_rows | 702 |
+| occupation_skill_bridge_rows | 94,682 |
+| skill_demand_summary_rows | 7,086 |
+| occupations_with_skills | 618 |
+| occupations_without_skills | 84 |
+| occupation_technology_skill_rows | 21,732 |
+
+### 7.3 Why This Helps the Dashboard
+- Career page: show mapped skills, abilities, knowledge, and technology tools per occupation.
+- Skill-demand page: rank skills by occupation coverage and average importance.
+- Data-quality page: explicitly flag occupations with no mapped skill records.
 
 ---
 
-## 8. Suggested Slide Order
+## 8. Key Talking Points for Slides
+- The mapping layer is the integration bridge between program data and career outcomes.
+- Cleaning quality directly improves semantic matching quality.
+- Sentence Transformer gives stronger semantic behavior than basic TF-IDF in this dataset.
+- O*NET enrichment adds explicit career-specific skill and technology context.
+- Thresholded candidates create a flexible pool for downstream ranking.
+- This is now a stronger baseline before adding GCSI and final recommendation scoring.
+
+---
+
+## 9. Suggested Slide Order
 1. Problem and objective
 2. Data sources
 3. Main showcase: before -> after cleaning
@@ -149,4 +193,12 @@ Interpretation:
 5. Run summary table
 6. Threshold sensitivity table
 7. Program-level sample outputs
-8. Next step: GCSI + ranking policy
+8. O*NET skill and technology enrichment
+9. Coverage snapshot and data-quality view
+10. Next step: GCSI + ranking policy
+
+---
+
+## 10. Data Dictionary Reference
+For dashboard implementation details, use the mapping folder guide:
+- datasets/mapping/README.md
