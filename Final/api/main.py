@@ -57,8 +57,17 @@ def dashboard_overview():
     grouped = data.program_recs.groupby("broad_field")
 
     for field, group in grouped:
+        # Fix: convert GCSI_imputed to bool properly, raise similarity threshold
+        imputed_mask = group["GCSI_imputed"].astype(str).str.lower().isin(["false", "0"])
+        group_filtered = group[
+            (group["similarity"] >= 0.50) &
+            imputed_mask
+        ]
+        if len(group_filtered) < 5:
+            group_filtered = group[group["similarity"] >= 0.50]
+
         top_careers = (
-            group["career_match"]
+            group_filtered["career_match"]
             .value_counts()
             .head(3)
             .index
@@ -67,14 +76,14 @@ def dashboard_overview():
         results.append({
             "broad_field":         str(field),
             "program_count":       int(group["program_name"].nunique()),
-            "avg_gcsi":            round(float(group["GCSI"].mean()), 2),
+            "avg_gcsi":            round(float(group_filtered["GCSI"].mean()), 2),
             "avg_salary":          safe(
-                float(group["A_MEDIAN"].mean())
-                if group["A_MEDIAN"].notna().any() else None
+                float(group_filtered["A_MEDIAN"].mean())
+                if group_filtered["A_MEDIAN"].notna().any() else None
             ),
             "avg_automation_risk": round(
-                float(group["automation_probability"].mean()), 4
-            ) if group["automation_probability"].notna().any() else 0.0,
+                float(group_filtered["automation_probability"].mean()), 4
+            ) if group_filtered["automation_probability"].notna().any() else 0.0,
             "top_careers":         top_careers,
         })
 
@@ -93,8 +102,17 @@ def dashboard_field(field_name: str):
         raise HTTPException(status_code=404,
                             detail=f"Field '{field_name}' not found")
 
+    # Fix: convert GCSI_imputed to bool properly, raise similarity threshold
+    imputed_mask = group["GCSI_imputed"].astype(str).str.lower().isin(["false", "0"])
+    group_filtered = group[
+        (group["similarity"] >= 0.50) &
+        imputed_mask
+    ]
+    if len(group_filtered) < 10:
+        group_filtered = group[group["similarity"] >= 0.50]
+
     top_careers = (
-        group.groupby("career_match")
+        group_filtered.groupby("career_match")
         .agg(
             avg_hybrid=("hybrid_score", "mean"),
             avg_gcsi=("GCSI", "mean"),
@@ -121,11 +139,11 @@ def dashboard_field(field_name: str):
     return {
         "broad_field":         field_name,
         "total_programs":      int(group["program_name"].nunique()),
-        "avg_gcsi":            round(float(group["GCSI"].mean()), 2),
-        "avg_salary":          safe(float(group["A_MEDIAN"].mean())),
-        "avg_automation_risk": safe(float(group["automation_probability"].mean())),
-        "gcsi_min":            round(float(group["GCSI"].min()), 2),
-        "gcsi_max":            round(float(group["GCSI"].max()), 2),
+        "avg_gcsi":            round(float(group_filtered["GCSI"].mean()), 2),
+        "avg_salary":          safe(float(group_filtered["A_MEDIAN"].mean())),
+        "avg_automation_risk": safe(float(group_filtered["automation_probability"].mean())),
+        "gcsi_min":            round(float(group_filtered["GCSI"].min()), 2),
+        "gcsi_max":            round(float(group_filtered["GCSI"].max()), 2),
         "top_careers":         careers_list,
     }
 
