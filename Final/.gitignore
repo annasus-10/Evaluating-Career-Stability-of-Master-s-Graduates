@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+
+# CSV files (too large for git)
+datasets/*.csv
+
+# Parquet files (baked into Docker image)
+datasets/*.parquet
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Jupyter
+.jupyter/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

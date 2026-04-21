@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerScope Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; }
+
+  /* Nav */
+  nav { background: #1e3a5f; color: white; padding: 14px 32px;
+        display: flex; align-items: center; gap: 24px; }
+  nav h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  nav button { background: none; border: none; color: rgba(255,255,255,0.7);
+               cursor: pointer; font-size: 14px; padding: 6px 14px;
+               border-radius: 6px; transition: all 0.2s; }
+  nav button:hover, nav button.active { background: rgba(255,255,255,0.15); color: white; }
+
+  /* Layout */
+  .page { display: none; padding: 32px; max-width: 1200px; margin: 0 auto; }
+  .page.active { display: block; }
+  h2 { font-size: 22px; margin-bottom: 20px; color: #1e3a5f; }
+  h3 { font-size: 16px; margin-bottom: 12px; color: #333; }
+
+  /* Cards */
+  .card { background: white; border-radius: 10px; padding: 20px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px; }
+
+  /* Form elements */
+  select, input[type="text"] {
+    width: 100%; padding: 10px 14px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 14px; margin-bottom: 12px; background: white;
+  }
+  select:focus, input[type="text"]:focus { outline: none; border-color: #1e3a5f; }
+  button.primary { background: #1e3a5f; color: white; border: none;
+                   padding: 11px 24px; border-radius: 8px; cursor: pointer;
+                   font-size: 14px; font-weight: 600; width: 100%;
+                   transition: background 0.2s; }
+  button.primary:hover { background: #2a4f7f; }
+  button.primary:disabled { background: #aaa; cursor: not-allowed; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* Stats */
+  .stat { text-align: center; }
+  .stat .val { font-size: 28px; font-weight: 700; color: #1e3a5f; }
+  .stat .lbl { font-size: 12px; color: #777; margin-top: 4px; }
+
+  /* GCSI badge */
+  .gcsi-badge { display: inline-block; padding: 4px 10px; border-radius: 20px;
+                font-size: 13px; font-weight: 700; }
+  .gcsi-high { background: #d4edda; color: #155724; }
+  .gcsi-mid  { background: #fff3cd; color: #856404; }
+  .gcsi-low  { background: #f8d7da; color: #721c24; }
+
+  /* Career cards */
+  .career-card { background: white; border-radius: 10px; padding: 18px;
+                 box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+                 border-left: 4px solid #1e3a5f; cursor: pointer;
+                 transition: transform 0.15s, box-shadow 0.15s;
+                 margin-bottom: 12px; }
+  .career-card:hover { transform: translateY(-2px);
+                       box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+  .career-card h4 { font-size: 15px; margin-bottom: 10px; color: #1e3a5f;
+                    text-transform: capitalize; }
+  .career-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .meta-pill { background: #f0f4f8; padding: 3px 10px; border-radius: 20px;
+               font-size: 12px; color: #444; }
+  .skills-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .skill-tag { background: #e8f0fe; color: #1a56a0; padding: 2px 8px;
+               border-radius: 12px; font-size: 11px; }
+  .imputed-note { font-size: 11px; color: #999; font-style: italic; margin-top: 6px; }
+
+  /* Progress bar */
+  .progress-wrap { margin: 6px 0; }
+  .progress-label { display: flex; justify-content: space-between;
+                    font-size: 12px; margin-bottom: 3px; }
+  .progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: #1e3a5f;
+                   transition: width 0.5s; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #1e3a5f; color: white; padding: 10px 14px; text-align: left; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+  tr:hover td { background: #f8f9ff; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0;
+                   background: rgba(0,0,0,0.5); z-index: 100;
+                   align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 12px; padding: 28px;
+           width: 90%; max-width: 600px; max-height: 85vh;
+           overflow-y: auto; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px;
+                 background: none; border: none; font-size: 22px;
+                 cursor: pointer; color: #777; line-height: 1; }
+  .modal-close:hover { color: #333; }
+
+  /* Loading / error */
+  .loading { text-align: center; padding: 40px; color: #777; font-size: 14px; }
+  .error { background: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px;
+           padding: 14px; color: #c00; font-size: 13px; margin: 12px 0; }
+  .empty { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
+
+  /* Rank */
+  .rank { width: 28px; height: 28px; background: #1e3a5f; color: white;
+          border-radius: 50%; display: flex; align-items: center;
+          justify-content: center; font-size: 12px; font-weight: 700;
+          flex-shrink: 0; }
+  .career-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+  /* Program list */
+  #program-select { height: 200px; margin-bottom: 6px; }
+  #program-select option { padding: 6px 10px; }
+  #program-select option:checked,
+  #program-select option:hover { background: #1e3a5f; color: white; }
+
+  /* Selected program display */
+  .selected-display { background: #e8f0fe; border: 1px solid #1e3a5f;
+                      border-radius: 8px; padding: 8px 12px; font-size: 13px;
+                      color: #1e3a5f; margin-bottom: 12px; display: none; }
+
+  /* Autocomplete suggestions */
+  #career-suggestions div { padding: 10px 14px; cursor: pointer;
+                             font-size: 13px; text-transform: capitalize; }
+  #career-suggestions div:hover { background: #f0f4f8; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <h1>🎓 CareerScope</h1>
+  <button class="active" onclick="showPage('recommend', this)">Recommendations</button>
+  <button onclick="showPage('dashboard', this)">Dashboard</button>
+  <button onclick="showPage('career-detail-page', this)">Career Lookup</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════ RECOMMEND PAGE -->
+<div class="page active" id="recommend">
+  <h2>Career Recommendations</h2>
+  <div class="grid-2">
+
+    <!-- Left: controls -->
+    <div>
+      <div class="card">
+        <h3>Step 1 — Select your field</h3>
+        <select id="field-select" onchange="loadPrograms()">
+          <option value="">Loading fields...</option>
+        </select>
+
+        <h3>Step 2 — Select your program</h3>
+        <input type="text" id="program-search"
+               placeholder="Type to search programs..."
+               oninput="filterPrograms()"
+               style="margin-bottom:6px">
+        <select id="program-select" size="8" onchange="onProgramSelect(this)">
+          <option disabled>Select a field first</option>
+        </select>
+        <input type="hidden" id="selected-program" value="">
+        <input type="hidden" id="selected-type-hidden" value="">
+        <div class="selected-display" id="selected-display"></div>
+
+        <h3>Step 3 — Options</h3>
+        <div style="display:flex; gap:10px; margin-bottom:12px">
+          <div style="flex:1">
+            <label style="font-size:12px;color:#777">Degree type</label>
+            <select id="type-select" style="margin-top:4px; margin-bottom:0">
+              <option value="">Any</option>
+            </select>
+          </div>
+          <div style="flex:1">
+            <label style="font-size:12px;color:#777">Top N results</label>
+            <select id="topn-select" style="margin-top:4px; margin-bottom:0">
+              <option value="5">Top 5</option>
+              <option value="10" selected>Top 10</option>
+              <option value="15">Top 15</option>
+              <option value="20">Top 20</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="primary" onclick="getRecommendations()"
+                style="margin-top:8px">Get Recommendations</button>
+        <div id="rec-error"></div>
+      </div>
+    </div>
+
+    <!-- Right: results -->
+    <div id="rec-results">
+      <div class="card">
+        <div class="empty">Select a program and click Get Recommendations</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ DASHBOARD PAGE -->
+<div class="page" id="dashboard">
+  <h2>Market Overview Dashboard</h2>
+  <div id="dash-loading" class="loading">Loading market data...</div>
+  <div id="dash-content" style="display:none">
+
+    <div class="card grid-3" id="dash-stats" style="margin-bottom:20px"></div>
+
+    <div class="card">
+      <h3>All Fields — Stability &amp; Market Overview</h3>
+      <p style="font-size:12px;color:#777;margin-bottom:12px">
+        Click any row for a field deep dive</p>
+      <table id="dash-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Programs</th>
+            <th>Avg GCSI</th>
+            <th>Avg Salary</th>
+            <th>Avg Automation Risk</th>
+            <th>Top Careers</th>
+          </tr>
+        </thead>
+        <tbody id="dash-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>Field Deep Dive</h3>
+      <div style="display:flex; gap:10px; margin-bottom:16px; align-items:center">
+        <select id="field-dive-select" style="flex:1; margin:0">
+          <option value="">Select a field...</option>
+        </select>
+        <button class="primary" style="width:auto; padding:10px 20px"
+                onclick="loadFieldDive()">Load</button>
+      </div>
+      <div id="field-dive-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ CAREER LOOKUP -->
+<div class="page" id="career-detail-page">
+  <h2>Career Detail Lookup</h2>
+  <div class="card" style="max-width:600px">
+    <h3>Search a career</h3>
+    <p style="font-size:12px;color:#777;margin-bottom:10px">
+      Type a career name — suggestions will appear as you type</p>
+    <div style="position:relative">
+      <input type="text" id="career-input"
+             placeholder="e.g. financial managers, registered nurses"
+             oninput="onCareerInput()"
+             onkeydown="if(event.key==='Enter') lookupCareer()"
+             style="margin-bottom:0">
+      <div id="career-suggestions"
+           style="position:absolute; top:100%; left:0; right:0;
+                  background:white; border:1px solid #ddd; border-radius:8px;
+                  z-index:10; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+                  max-height:220px; overflow-y:auto; display:none;">
+      </div>
+    </div>
+    <button class="primary" onclick="lookupCareer()"
+            style="margin-top:12px">Look Up Career</button>
+    <div id="career-error"></div>
+  </div>
+  <div id="career-detail-result"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close"
+            onclick="document.getElementById('modal').classList.remove('open')">
+      ×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const API = 'https://careerscope-api-production.up.railway.app';
+let allPrograms = [];
+let fieldData   = [];
+let allCareers  = [];
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'dashboard' && !fieldData.length) loadDashboard();
+}
+
+function gcsiClass(v) {
+  return v >= 55 ? 'gcsi-high' : v >= 40 ? 'gcsi-mid' : 'gcsi-low';
+}
+
+function fmt(val, type) {
+  if (val == null || (typeof val === 'number' && isNaN(val))) return 'N/A';
+  if (type === 'pct') return (val * 100).toFixed(1) + '%';
+  return '$' + Math.round(val).toLocaleString();
+}
+
+function showError(id, msg) {
+  document.getElementById(id).innerHTML =
+    `<div class="error">⚠ ${msg}</div>`;
+}
+
+function clearError(id) {
+  document.getElementById(id).innerHTML = '';
+}
+
+function openModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modal')
+    document.getElementById('modal').classList.remove('open');
+}
+
+// ── Fields init ───────────────────────────────────────────────────────────────
+
+async function initFields() {
+  try {
+    const res = await fetch(`${API}/recommend/fields`);
+    if (!res.ok) throw new Error('API not reachable');
+    const fields = await res.json();
+
+    const sel = document.getElementById('field-select');
+    sel.innerHTML = '<option value="">— Select a field —</option>';
+    fields.forEach(f => {
+      sel.innerHTML +=
+        `<option value="${f.broad_field}">${f.broad_field} (${f.program_count} programs)</option>`;
+    });
+
+    const dive = document.getElementById('field-dive-select');
+    dive.innerHTML = '<option value="">Select a field...</option>';
+    fields.forEach(f => {
+      dive.innerHTML += `<option value="${f.broad_field}">${f.broad_field}</option>`;
+    });
+
+  } catch(e) {
+    showError('rec-error',
+      'Cannot connect to API at localhost:8000. Make sure uvicorn is running.');
+  }
+}
+
+// ── Programs ──────────────────────────────────────────────────────────────────
+
+async function loadPrograms() {
+  const field = document.getElementById('field-select').value;
+  if (!field) return;
+
+  // Reset selection
+  document.getElementById('selected-program').value = '';
+  document.getElementById('selected-type-hidden').value = '';
+  document.getElementById('selected-display').style.display = 'none';
+  document.getElementById('program-search').value = '';
+
+  const progSel = document.getElementById('program-select');
+  progSel.innerHTML = '<option disabled>Loading programs...</option>';
+
+  try {
+    const res = await fetch(
+      `${API}/recommend/programs/${encodeURIComponent(field)}`
+    );
+    allPrograms = await res.json();
+    renderProgramList(allPrograms);
+
+    // Populate degree type dropdown
+    const types = [...new Set(allPrograms.map(p => p.program_type))].sort();
+    const typeSel = document.getElementById('type-select');
+    typeSel.innerHTML = '<option value="">Any</option>';
+    types.forEach(t => {
+      typeSel.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+
+  } catch(e) {
+    progSel.innerHTML = '<option disabled>Error loading programs</option>';
+  }
+}
+
+function renderProgramList(programs) {
+  const sel = document.getElementById('program-select');
+  if (!programs.length) {
+    sel.innerHTML = '<option disabled>No programs match your search</option>';
+    return;
+  }
+  sel.innerHTML = programs.map(p =>
+    `<option value="${p.program_name}" data-type="${p.program_type}">
+      ${p.program_name} (${p.program_type})</option>`
+  ).join('');
+}
+
+function onProgramSelect(sel) {
+  if (sel.selectedIndex < 0) return;
+  const opt = sel.options[sel.selectedIndex];
+  const name = opt.value;
+  const type = opt.getAttribute('data-type') || '';
+
+  document.getElementById('selected-program').value = name;
+  document.getElementById('selected-type-hidden').value = type;
+
+  const display = document.getElementById('selected-display');
+  display.textContent = `✓ Selected: ${name} (${type})`;
+  display.style.display = 'block';
+
+  // Sync type dropdown
+  const typeSel = document.getElementById('type-select');
+  for (let o of typeSel.options) {
+    if (o.value === type) { typeSel.value = type; break; }
+  }
+  clearError('rec-error');
+}
+
+function filterPrograms() {
+  const q = document.getElementById('program-search').value.toLowerCase().trim();
+  const filtered = q
+    ? allPrograms.filter(p => p.program_name.toLowerCase().includes(q))
+    : allPrograms;
+  renderProgramList(filtered);
+}
+
+// ── Get Recommendations ───────────────────────────────────────────────────────
+
+async function getRecommendations() {
+  clearError('rec-error');
+
+  const programName = document.getElementById('selected-program').value.trim();
+  if (!programName) {
+    showError('rec-error', 'Please select a program from the list first.');
+    return;
+  }
+
+  const programType = document.getElementById('type-select').value;
+  const topN        = document.getElementById('topn-select').value;
+
+  let url = `${API}/recommend/${encodeURIComponent(programName)}?top_n=${topN}`;
+  if (programType) url += `&program_type=${encodeURIComponent(programType)}`;
+
+  const btn = document.querySelector('#recommend .primary');
+  btn.disabled    = true;
+  btn.textContent = 'Loading...';
+  document.getElementById('rec-results').innerHTML =
+    '<div class="loading">Fetching recommendations...</div>';
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Program not found');
+    }
+    const data = await res.json();
+    renderRecommendations(data);
+  } catch(e) {
+    showError('rec-error', e.message);
+    document.getElementById('rec-results').innerHTML =
+      '<div class="card"><div class="empty">No results found.</div></div>';
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Get Recommendations';
+  }
+}
+
+function renderRecommendations(data) {
+  const container = document.getElementById('rec-results');
+
+  let html = `
+    <div class="card" style="margin-bottom:16px">
+      <h3 style="font-size:17px;color:#1e3a5f">${data.program_name}</h3>
+      <div style="font-size:13px;color:#777;margin-top:6px">
+        ${data.program_type} &nbsp;·&nbsp; ${data.broad_field}
+        &nbsp;·&nbsp; ${data.total_candidates} career candidates found
+      </div>
+    </div>`;
+
+  if (!data.recommendations.length) {
+    html += '<div class="card"><div class="empty">No recommendations found.</div></div>';
+    container.innerHTML = html;
+    return;
+  }
+
+  if (data.total_candidates <= 3) {
+  html += `
+    <div class="card" style="background:#fff8e1;border:1px solid #ffe082;margin-bottom:12px">
+      <div style="font-size:13px;color:#795548">
+        ⚠ This program has a small candidate pool (${data.total_candidates} careers matched
+        above the similarity threshold). Results shown are the best available matches.
+      </div>
+    </div>`;
+}
+
+  data.recommendations.forEach((c, i) => {
+    const gcsiCls = gcsiClass(c.GCSI);
+    const skills  = c.top_skills
+      ? c.top_skills.slice(0, 4).map(s =>
+          `<span class="skill-tag">${s}</span>`).join('')
+      : '';
+
+    html += `
+      <div class="career-card"
+           onclick="showCareerModal('${c.career_match.replace(/'/g,"\\'")}')">
+        <div class="career-header">
+          <div class="rank">${i + 1}</div>
+          <h4>${c.career_match}</h4>
+          <span class="gcsi-badge ${gcsiCls}" style="margin-left:auto">
+            GCSI ${c.GCSI.toFixed(1)}</span>
+        </div>
+        <div class="career-meta">
+          <span class="meta-pill">💰 ${fmt(c.A_MEDIAN)}</span>
+          <span class="meta-pill">🤖 Risk ${fmt(c.automation_probability,'pct')}</span>
+          <span class="meta-pill">📊 Match ${(c.similarity * 100).toFixed(0)}%</span>
+          <span class="meta-pill">⭐ Score ${c.hybrid_score.toFixed(3)}</span>
+          ${c.hot_tech_items != null
+            ? `<span class="meta-pill">🔧 ${c.hot_tech_items} hot tech</span>` : ''}
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span style="font-size:11px;color:#777">Stability</span>
+            <span style="font-size:11px;font-weight:600">
+              ${c.GCSI.toFixed(1)} / 100</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${c.GCSI}%"></div>
+          </div>
+        </div>
+        ${skills ? `<div class="skills-list">${skills}</div>` : ''}
+        ${c.GCSI_imputed
+          ? '<div class="imputed-note">* GCSI estimated from median</div>' : ''}
+        <div style="font-size:11px;color:#aaa;margin-top:8px">
+          Click for full career detail →</div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ── Career modal ──────────────────────────────────────────────────────────────
+
+async function showCareerModal(careerName) {
+  openModal('<div class="loading">Loading career detail...</div>');
+  try {
+    const res = await fetch(
+      `${API}/dashboard/career/${encodeURIComponent(careerName)}`
+    );
+    if (!res.ok) {
+      // Not in GCSI table — show what we know from the recommendation
+      openModal(`
+        <div style="margin-bottom:16px">
+          <h2 style="font-size:18px;color:#1e3a5f;text-transform:capitalize;margin-bottom:8px">
+            ${careerName}</h2>
+          <div style="font-size:13px;color:#aaa">
+            Full GCSI breakdown not available for this occupation.
+            This career was matched semantically but does not have
+            a direct entry in the BLS occupation database.
+          </div>
+        </div>`);
+      return;
+    }
+    const d = await res.json();
+    renderCareerModal(d);
+  } catch(e) {
+    openModal(`<div class="error">⚠ ${e.message}</div>`);
+  }
+}
+
+function gcsiBreakdownHTML(d) {
+  const components = [
+    { label: 'Income strength',   val: d.income_strength,   weight: '35%' },
+    { label: 'Employment scale',  val: d.employment_scale,  weight: '25%' },
+    { label: 'Wage stability',    val: d.wage_stability,    weight: '20%' },
+    { label: 'Automation safety', val: d.automation_safety, weight: '20%' },
+  ];
+  return components.map(c => c.val == null ? '' : `
+    <div class="progress-wrap" style="margin-bottom:10px">
+      <div class="progress-label">
+        <span>${c.label}
+          <span style="color:#aaa;font-size:11px">(weight ${c.weight})</span>
+        </span>
+        <span style="font-weight:600">${(c.val * 100).toFixed(1)}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${c.val * 100}%"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderCareerModal(d) {
+  const skills  = d.top_skills
+    ? d.top_skills.map(s => `<span class="skill-tag">${s}</span>`).join('')
+    : '<span style="color:#aaa">No skill data available</span>';
+  const gcsiCls = gcsiClass(d.GCSI);
+
+  openModal(`
+    <div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <h2 style="font-size:18px;color:#1e3a5f;text-transform:capitalize">
+          ${d.career_match}</h2>
+        <span class="gcsi-badge ${gcsiCls}">GCSI ${d.GCSI.toFixed(1)}</span>
+      </div>
+      <div style="font-size:12px;color:#aaa">SOC code: ${d.SOC6 || 'N/A'}</div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="stat">
+        <div class="val">${fmt(d.A_MEDIAN)}</div>
+        <div class="lbl">Annual median salary</div>
+      </div>
+      <div class="stat">
+        <div class="val">${d.TOT_EMP != null
+          ? (d.TOT_EMP / 1000).toFixed(0) + 'K' : 'N/A'}</div>
+        <div class="lbl">Total employed</div>
+      </div>
+      <div class="stat">
+        <div class="val">${fmt(d.automation_probability, 'pct')}</div>
+        <div class="lbl">Automation risk</div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:12px">GCSI breakdown</h3>
+    ${gcsiBreakdownHTML(d)}
+
+    <div style="margin:16px 0">
+      <h3 style="margin-bottom:8px">Technology</h3>
+      <div class="career-meta">
+        <span class="meta-pill">🔧 ${d.technology_items ?? 'N/A'} total tools</span>
+        <span class="meta-pill">🔥 ${d.hot_tech_items ?? 'N/A'} hot tech</span>
+        <span class="meta-pill">📈 ${d.in_demand_items ?? 'N/A'} in demand</span>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:8px">Top skills</h3>
+    <div class="skills-list">${skills}</div>`);
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+
+async function loadDashboard() {
+  document.getElementById('dash-loading').style.display = 'block';
+  document.getElementById('dash-content').style.display  = 'none';
+  try {
+    const res = await fetch(`${API}/dashboard/overview`);
+    if (!res.ok) throw new Error('API error');
+    fieldData = await res.json();
+
+    // Also pre-load career names for autocomplete
+    fieldData.forEach(f => f.top_careers.forEach(c => {
+      if (!allCareers.includes(c)) allCareers.push(c);
+    }));
+    allCareers.sort();
+
+    renderDashboard(fieldData);
+  } catch(e) {
+    document.getElementById('dash-loading').innerHTML =
+      `<div class="error">⚠ Cannot connect to API. Is the server running?</div>`;
+  }
+}
+
+function renderDashboard(data) {
+  document.getElementById('dash-loading').style.display = 'none';
+  document.getElementById('dash-content').style.display = 'block';
+
+  const totalPrograms = data.reduce((s, f) => s + f.program_count, 0);
+  const avgGcsi = (data.reduce((s, f) => s + f.avg_gcsi, 0) / data.length).toFixed(1);
+  const topField = data[0].broad_field;
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat">
+      <div class="val">${data.length}</div>
+      <div class="lbl">Broad fields tracked</div>
+    </div>
+    <div class="stat">
+      <div class="val">${totalPrograms.toLocaleString()}</div>
+      <div class="lbl">Total programs</div>
+    </div>
+    <div class="stat">
+      <div class="val">${avgGcsi}</div>
+      <div class="lbl">Average GCSI</div>
+    </div>`;
+
+  document.getElementById('dash-tbody').innerHTML = data.map(f => `
+    <tr style="cursor:pointer" onclick="quickDive('${f.broad_field}')">
+      <td><strong>${f.broad_field}</strong></td>
+      <td>${f.program_count.toLocaleString()}</td>
+      <td><span class="gcsi-badge ${gcsiClass(f.avg_gcsi)}">
+        ${f.avg_gcsi.toFixed(1)}</span></td>
+      <td>${fmt(f.avg_salary)}</td>
+      <td>${f.avg_automation_risk != null
+        ? (f.avg_automation_risk * 100).toFixed(1) + '%' : 'N/A'}</td>
+      <td style="font-size:12px;color:#555">
+        ${f.top_careers.slice(0, 2).join(', ')}</td>
+    </tr>`).join('');
+}
+
+function quickDive(field) {
+  document.getElementById('field-dive-select').value = field;
+  loadFieldDive();
+  setTimeout(() => {
+    document.getElementById('field-dive-result')
+      .scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+async function loadFieldDive() {
+  const field = document.getElementById('field-dive-select').value;
+  if (!field) return;
+
+  const result = document.getElementById('field-dive-result');
+  result.innerHTML = '<div class="loading">Loading field data...</div>';
+
+  try {
+    const res = await fetch(
+      `${API}/dashboard/field/${encodeURIComponent(field)}`
+    );
+    if (!res.ok) throw new Error('Field not found');
+    const d = await res.json();
+
+    result.innerHTML = `
+      <div class="grid-3" style="margin-bottom:16px">
+        <div class="stat card">
+          <div class="val">${d.total_programs.toLocaleString()}</div>
+          <div class="lbl">Total programs</div>
+        </div>
+        <div class="stat card">
+          <div class="val">
+            <span class="gcsi-badge ${gcsiClass(d.avg_gcsi)}">
+              ${d.avg_gcsi.toFixed(1)}</span></div>
+          <div class="lbl">Avg GCSI (range ${d.gcsi_min}–${d.gcsi_max})</div>
+        </div>
+        <div class="stat card">
+          <div class="val">${fmt(d.avg_salary)}</div>
+          <div class="lbl">Avg annual salary</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:4px">Top 10 careers in ${field}</h3>
+        <p style="font-size:12px;color:#777;margin-bottom:12px">
+          Click any career for full detail</p>
+        <table>
+          <thead><tr>
+            <th>Career</th><th>Avg GCSI</th><th>Avg Salary</th>
+            <th>Avg Automation</th><th>Program count</th>
+          </tr></thead>
+          <tbody>
+            ${d.top_careers.map(c => `
+              <tr style="cursor:pointer"
+                  onclick="showCareerModal('${c.career_match.replace(/'/g,"\\'")}')">
+                <td style="text-transform:capitalize">${c.career_match}</td>
+                <td><span class="gcsi-badge ${gcsiClass(c.avg_gcsi)}">
+                  ${c.avg_gcsi.toFixed(1)}</span></td>
+                <td>${fmt(c.avg_salary)}</td>
+                <td>${c.avg_automation != null
+                  ? (c.avg_automation * 100).toFixed(1) + '%' : 'N/A'}</td>
+                <td>${c.program_count}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch(e) {
+    result.innerHTML = `<div class="error">⚠ ${e.message}</div>`;
+  }
+}
+
+// ── Career Lookup with autocomplete ──────────────────────────────────────────
+
+async function initCareerNames() {
+  // Load career names from occupation_gcsi via dashboard overview
+  // They will also be populated when dashboard loads
+  // Here we pre-warm if dashboard hasn't loaded yet
+  if (allCareers.length) return;
+  try {
+    const res  = await fetch(`${API}/dashboard/overview`);
+    const data = await res.json();
+    data.forEach(f => f.top_careers.forEach(c => {
+      if (!allCareers.includes(c)) allCareers.push(c);
+    }));
+    allCareers.sort();
+  } catch(e) { /* silent */ }
+}
+
+async function onCareerInput() {
+  const q   = document.getElementById('career-input').value.trim();
+  const box = document.getElementById('career-suggestions');
+
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+
+  try {
+    const res     = await fetch(`${API}/dashboard/careers/search?q=${encodeURIComponent(q)}`);
+    const matches = await res.json();
+
+    if (!matches.length) { box.style.display = 'none'; return; }
+
+    box.innerHTML = matches.map(m =>
+      `<div onclick="selectCareer('${m.occupation_name.replace(/'/g,"\\'")}')">
+        <span style="text-transform:capitalize">${m.occupation_name}</span>
+        <span style="float:right;color:#aaa;font-size:11px">
+          GCSI ${m.GCSI}</span>
+      </div>`
+    ).join('');
+    box.style.display = 'block';
+  } catch(e) {
+    box.style.display = 'none';
+  }
+}
+
+function selectCareer(name) {
+  document.getElementById('career-input').value = name;
+  document.getElementById('career-suggestions').style.display = 'none';
+  lookupCareer();
+}
+
+async function lookupCareer() {
+  clearError('career-error');
+  document.getElementById('career-suggestions').style.display = 'none';
+
+  const name = document.getElementById('career-input').value.trim();
+  if (!name) {
+    showError('career-error', 'Please enter a career name.');
+    return;
+  }
+
+  document.getElementById('career-detail-result').innerHTML =
+    '<div class="loading">Looking up career...</div>';
+
+  try {
+    const res = await fetch(
+      `${API}/dashboard/career/${encodeURIComponent(name)}`
+    );
+    if (!res.ok) {
+      throw new Error(
+        `"${name}" not found. Try a full occupation name like
+        "financial managers" or "registered nurses".`
+      );
+    }
+    const d = await res.json();
+    renderCareerInline(d);
+  } catch(e) {
+    showError('career-error', e.message);
+    document.getElementById('career-detail-result').innerHTML = '';
+  }
+}
+
+function renderCareerInline(d) {
+  const skills  = d.top_skills
+    ? d.top_skills.map(s => `<span class="skill-tag">${s}</span>`).join('')
+    : '<span style="color:#aaa">No skill data available</span>';
+  const gcsiCls = gcsiClass(d.GCSI);
+
+  document.getElementById('career-detail-result').innerHTML = `
+    <div class="card" style="margin-top:20px;max-width:700px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <h3 style="font-size:18px;color:#1e3a5f;text-transform:capitalize">
+          ${d.career_match}</h3>
+        <span class="gcsi-badge ${gcsiCls}">GCSI ${d.GCSI.toFixed(1)}</span>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="stat">
+          <div class="val">${fmt(d.A_MEDIAN)}</div>
+          <div class="lbl">Annual median salary</div>
+        </div>
+        <div class="stat">
+          <div class="val">${d.TOT_EMP != null
+            ? (d.TOT_EMP / 1000).toFixed(0) + 'K' : 'N/A'}</div>
+          <div class="lbl">Total employed</div>
+        </div>
+        <div class="stat">
+          <div class="val">${fmt(d.automation_probability, 'pct')}</div>
+          <div class="lbl">Automation risk</div>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:12px">GCSI breakdown</h3>
+      ${gcsiBreakdownHTML(d)}
+
+      <div style="margin-top:16px">
+        <h3 style="margin-bottom:8px">Technology</h3>
+        <div class="career-meta">
+          <span class="meta-pill">🔧 ${d.technology_items ?? 'N/A'} total tools</span>
+          <span class="meta-pill">🔥 ${d.hot_tech_items ?? 'N/A'} hot tech</span>
+          <span class="meta-pill">📈 ${d.in_demand_items ?? 'N/A'} in demand</span>
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <h3 style="margin-bottom:8px">Top skills</h3>
+        <div class="skills-list">${skills}</div>
+      </div>
+    </div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+initFields();
+initCareerNames();
+</script>
+</body>
+</html>
