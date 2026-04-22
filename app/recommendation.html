@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerScope Recommendations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f3ee;--bg2:#edeae3;--surface:#fff;--surface2:#faf9f6;--ink:#1a1714;--ink2:#4a463f;--ink3:#8a8278;
+  --accent:#5b4fcf;--accent-light:#ede9ff;--accent2:#0fa87e;--accent2-light:#e0f7f1;--warn:#e07b39;--warn-light:#fef0e6;
+  --danger:#d94f4f;--danger-light:#fdeaea;--border:#e2ddd5;--shadow:0 2px 12px rgba(26,23,20,0.07);--shadow-lg:0 8px 32px rgba(26,23,20,0.10);
+  --r:18px;--r-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;line-height:1.6;background-image:radial-gradient(circle at 15% 20%, rgba(91,79,207,0.06) 0%, transparent 50%),radial-gradient(circle at 85% 70%, rgba(15,168,126,0.05) 0%, transparent 50%)}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:30;box-shadow:0 2px 16px rgba(26,23,20,0.05)}
+.topbar-inner{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--accent)}
+.brand small{font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:700;color:var(--ink3);background:var(--accent-light);padding:4px 10px;border-radius:999px}
+.toplinks{display:flex;gap:10px;flex-wrap:wrap}
+.toplinks a{padding:9px 14px;border:1.5px solid var(--border);border-radius:999px;background:var(--surface2);font-size:.88rem;font-weight:600;color:var(--ink2)}
+.toplinks a.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.page{max-width:1240px;margin:0 auto;padding:28px 24px 56px}
+.hero{background:linear-gradient(135deg, rgba(91,79,207,0.98) 0%, rgba(15,168,126,0.94) 100%);color:#fff;border-radius:26px;padding:30px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;margin-bottom:20px}
+.hero::after{content:'';position:absolute;right:-50px;top:-40px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero > *{position:relative;z-index:1}
+.hero h1{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1.08;margin-bottom:10px}
+.hero p{max-width:760px;opacity:.95}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:18px}
+.hero-note{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:16px}
+.hero-note strong{display:block;margin-bottom:6px}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
+.sidebar{position:sticky;top:86px;display:grid;gap:14px}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.card h2,.card h3{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em}
+.card h2{font-size:1.4rem;margin-bottom:8px}
+.card h3{font-size:1.1rem;margin-bottom:12px}
+.card p.lead{color:var(--ink2);font-size:.93rem}
+.steps{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent-light);color:var(--accent);font-weight:700}
+.step.done .step-num{background:var(--accent);color:#fff}
+.step strong{display:block;font-size:.92rem;color:var(--ink)}
+.step span{font-size:.82rem;color:var(--ink3)}
+.main{display:grid;gap:16px}
+.panel{scroll-margin-top:90px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label.meta{font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+input,select,button{font:inherit}
+input[type=text],input[type=email],input[type=tel],select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface2);color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--accent);background:#fff}
+select.cute-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%235b4fcf' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"),linear-gradient(135deg,#fff 0%,#f7f4ff 55%,#eefaf6 100%);background-repeat:no-repeat,no-repeat;background-position:right 14px center,center;background-size:16px,cover;box-shadow:0 8px 20px rgba(91,79,207,0.08)}
+select.cute-select:hover{border-color:#cfc5ff;transform:translateY(-1px);transition:.18s}
+.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{padding:11px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;font-weight:700;color:var(--ink2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.green{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mini-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface2);border:1.5px solid var(--border);border-radius:16px;padding:16px}
+.kpi small{display:block;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);font-weight:700;margin-bottom:6px}
+.kpi strong{display:block;font-family:'DM Serif Display',serif;font-size:1.7rem;line-height:1.05}
+.kpi span{display:block;font-size:.8rem;color:var(--ink3);margin-top:6px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.choice{padding:14px;border:1.5px solid var(--border);border-radius:16px;background:var(--surface2);cursor:pointer;transition:.18s}
+.choice:hover{transform:translateY(-1px);border-color:var(--accent)}
+.choice.active{border-color:var(--accent);background:var(--accent-light)}
+.choice strong{display:block;font-size:.95rem;margin-bottom:4px}
+.choice span{display:block;font-size:.82rem;color:var(--ink3)}
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.skill{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface2);cursor:pointer}
+.skill.active{border-color:var(--accent2);background:var(--accent2-light)}
+.skill input{margin-top:4px;accent-color:var(--accent2)}
+.skill strong{display:block;font-size:.9rem}
+.skill span{font-size:.78rem;color:var(--ink3)}
+.profile-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:var(--accent-light);color:var(--accent);font-size:.82rem;font-weight:700;margin-right:8px;margin-bottom:8px}
+.recommend-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+.result-card{background:linear-gradient(135deg,var(--accent-light),var(--accent2-light));border:1.5px solid rgba(91,79,207,.12);border-radius:20px;padding:20px}
+.result-title{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.1;margin-bottom:8px}
+.score-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:#fff;color:var(--accent);font-weight:700;font-size:.84rem;border:1px solid rgba(91,79,207,.14)}
+.stat-list{display:grid;gap:10px;margin-top:14px}
+.stat-row{display:grid;grid-template-columns:160px 1fr 54px;gap:10px;align-items:center}
+.stat-row label{font-size:.86rem;color:var(--ink2);font-weight:600}
+.track{height:10px;background:var(--bg2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.fill.warn{background:linear-gradient(90deg,var(--warn),#f5a623)}
+.fill.green{background:linear-gradient(90deg,var(--accent2),#39c19c)}
+.stat-row span{text-align:right;font-size:.82rem;color:var(--ink3);font-family:'DM Mono',monospace}
+.alt-list{display:grid;gap:10px}
+.alt{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:16px;background:var(--surface2)}
+.rank{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-weight:700;flex-shrink:0}
+.alt strong{display:block;font-size:.93rem}
+.alt span{font-size:.8rem;color:var(--ink3)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{padding:6px 10px;border-radius:999px;font-size:.78rem;font-weight:700}
+.pill.good{background:var(--accent2-light);color:var(--accent2)}
+.pill.warn{background:var(--warn-light);color:var(--warn)}
+.pill.acc{background:var(--accent-light);color:var(--accent)}
+.action-list{display:grid;gap:12px}
+.action{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;padding:12px 0;border-bottom:1px solid var(--bg2)}
+.action:last-child{border-bottom:0}
+.action-num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.helper{font-size:.84rem;color:var(--ink3);margin-top:8px}
+.hidden{display:none !important}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}.sidebar{position:static}.hero-grid,.recommend-hero,.grid2,.form-grid,.mini-kpis{grid-template-columns:1fr}}
+@media(max-width:700px){.page{padding:20px 16px 40px}.topbar-inner{padding:12px 16px}.choice-grid,.skills{grid-template-columns:1fr}.hero h1{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">CareerScope <small>Personalised Recommendations</small></div>
+    <div class="toplinks">
+      <a href="dashboard.html">Back to dashboard</a>
+      <a class="primary" href="#profilePanel">Start profile</a>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <section class="hero">
+    <h1>Your personalised career recommendation journey</h1>
+    <p>This page works like a personal career guide. The viewer enters basic details, chooses a broad academic field, narrows into a specific master's program, selects current skills, and then receives a more personal recommendation with next skills to learn.</p>
+    <div class="hero-grid">
+      <div class="hero-note"><strong>How it feels different</strong>This is not another dashboard. It follows a step by step decision flow so the user feels like the system is learning about them before making a suggestion.</div>
+      <div class="hero-note"><strong>What the system returns</strong>Best fit career path, field level outlook, current readiness, backup options, and a next skill plan to improve future fit.</div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Your journey</h3>
+        <div class="steps" id="stepTracker">
+          <div class="step" data-step="1"><div class="step-num">1</div><div><strong>Personal profile</strong><span>Enter basic details</span></div></div>
+          <div class="step" data-step="2"><div class="step-num">2</div><div><strong>Broad field</strong><span>Choose the academic field</span></div></div>
+          <div class="step" data-step="3"><div><div class="step-num">3</div></div><div><strong>Specific program</strong><span>Select the master's program</span></div></div>
+          <div class="step" data-step="4"><div class="step-num">4</div><div><strong>Your skillset</strong><span>Pick current strengths</span></div></div>
+          <div class="step" data-step="5"><div class="step-num">5</div><div><strong>Recommendation</strong><span>See your best path and next skills</span></div></div>
+        </div>
+      </div>
+
+    </aside>
+
+    <main class="main">
+      <section class="card panel" id="profilePanel">
+        <h2>1. Tell us about yourself</h2>
+        <p class="lead">These details make the experience feel personal and allow the final recommendation to be presented as if it is meant for one viewer, not for everyone.</p>
+        <div class="form-grid">
+          <div class="field"><label class="meta">Full name</label><input id="userName" type="text" placeholder="Enter your full name"/></div>
+          <div class="field"><label class="meta">Phone number</label><input id="userPhone" type="tel" placeholder="Enter your phone number"/></div>
+          <div class="field full"><label class="meta">Email address</label><input id="userEmail" type="email" placeholder="Enter your email address"/></div>
+        </div>
+        <div class="button-row"><button class="btn primary" id="saveProfileBtn">Save and continue</button></div>
+        <div class="helper" id="profileHelper">The final section will use the entered name in the recommendation summary.</div>
+      </section>
+
+      <section class="card panel" id="degreePanel">
+        <h2>2. Which broad field interests you?</h2>
+        <p class="lead">Choose the broad academic field first. Once you confirm it, the system reveals the specific master's programs available within that field.</p>
+        <div class="field" style="max-width:420px">
+          <label class="meta">Interested field</label>
+          <select id="degreeSelect" class="cute-select"><option value="">Select a field</option></select>
+        </div>
+        <div class="button-row"><button class="btn green" id="degreeEnterBtn">Enter field</button></div>
+        <div id="degreeSummary" class="helper hidden"></div>
+      </section>
+
+      <section class="card panel" id="fieldPanel">
+        <h2>3. Which specific master's program interests you?</h2>
+        <p class="lead">Pick one program from your chosen field. After you confirm it, the page shows the key details of the selected field such as GCSI score, automation safety, demand, and salary outlook, then prepares program based recommendations.</p>
+        <div id="fieldPrompt" class="helper">Choose a broad field first to unlock program options.</div>
+        <div class="field" style="max-width:460px;margin-top:12px">
+          <label class="meta">Specific program</label>
+          <select id="fieldSelect" class="cute-select" disabled>
+            <option value="">Select a program</option>
+          </select>
+        </div>
+        <div class="button-row"><button class="btn primary" id="fieldEnterBtn" disabled>Enter program</button></div>
+        <div id="fieldDetails" class="hidden" style="margin-top:14px">
+          <div class="mini-kpis" id="fieldKpis"></div>
+          <div class="grid2" style="margin-top:16px">
+            <div class="card" style="padding:16px;background:var(--surface2)">
+              <h3 style="margin-bottom:10px">Top career directions in this field</h3>
+              <div id="sectorList" class="stat-list"></div>
+            </div>
+            <div class="card" style="padding:16px;background:var(--surface2)">
+              <h3 style="margin-bottom:10px">Field interpretation</h3>
+              <div id="fieldInsight" style="font-size:.9rem;color:var(--ink2)"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="skillsPanel">
+        <h2>4. What is your current skillset?</h2>
+        <p class="lead">Choose up to 10 skills that best describe what you already have. The recommendation will compare your chosen skills with the top skills returned for careers in the selected program.</p>
+        <div class="helper" id="skillsHelper">Choose a program first to see the related skill options.</div>
+        <div id="skillsBox" class="skills"></div>
+        <div class="button-row">
+          <button class="btn primary" id="recommendBtn" disabled>Predict my best career path</button>
+          <span class="helper" id="skillCountHelper"></span>
+        </div>
+      </section>
+
+      <section class="card panel hidden" id="resultPanel">
+        <h2>5. Best career paths based on your selected program and skills</h2>
+        <p class="lead" id="resultIntro"></p>
+        <div class="recommend-hero">
+          <div class="result-card">
+            <div class="score-badge" id="bestFitBadge"></div>
+            <div class="result-title" id="bestFitTitle"></div>
+            <p id="bestFitText" style="color:var(--ink2)"></p>
+            <div class="pills" id="profilePills"></div>
+            <div class="stat-list" id="fitStats"></div>
+          </div>
+          <div class="card" style="padding:18px;background:var(--surface2)">
+            <h3>Other matching career paths</h3>
+            <div class="alt-list" id="altOptions"></div>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:16px">
+          <div class="card" style="padding:18px;background:var(--surface2)">
+            <h3>Skills you already bring</h3>
+            <div class="pills" id="ownedSkills"></div>
+            <div class="helper">These are the selected skills that already support your chosen field and role direction.</div>
+          </div>
+          <div class="card" style="padding:18px;background:var(--surface2)">
+            <h3>Skills to learn next</h3>
+            <div class="pills" id="nextSkills"></div>
+            <div class="helper">These are the highest impact missing skills for becoming stronger in the recommended path.</div>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:16px">
+          <div class="card">
+            <h3>Your readiness across top roles</h3>
+            <div id="readinessList" class="stat-list"></div>
+          </div>
+          <div class="card">
+            <h3>Your next action plan</h3>
+            <div id="actionPlan" class="action-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+const API = 'https://careerscope-api-production.up.railway.app';
+
+const state = {
+  profile: { name: '', phone: '', email: '' },
+  selectedField: '',
+  selectedProgram: null,
+  selectedSkills: [],
+  fields: [],
+  programs: [],
+  recommendations: [],
+  fieldDetail: null,
+  careerDetailCache: new Map(),
+  aggregatedSkills: []
+};
+
+function byId(id){ return document.getElementById(id); }
+function escapeHtml(value){ return String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function human(value){ return String(value || '').replace(/\b\w/g, m => m.toUpperCase()); }
+function money(value){ return value == null || Number.isNaN(Number(value)) ? 'N/A' : '$' + Math.round(Number(value)).toLocaleString(); }
+function moneyShort(value){ return value == null || Number.isNaN(Number(value)) ? 'N/A' : '$' + Math.round(Number(value) / 1000) + 'K'; }
+function fmtInt(value){ return value == null || Number.isNaN(Number(value)) ? 'N/A' : Math.round(Number(value)).toLocaleString(); }
+function setStep(step){
+  document.querySelectorAll('#stepTracker .step').forEach((el, idx) => {
+    el.classList.toggle('done', idx + 1 <= step);
+  });
+}
+async function fetchJSON(url){
+  const res = await fetch(url);
+  const data = await res.json().catch(() => ({}));
+  if(!res.ok) throw new Error(data?.detail || `Request failed: ${res.status}`);
+  return data;
+}
+
+async function loadFields(){
+  state.fields = await fetchJSON(`${API}/recommend/fields`);
+  byId('degreeSelect').innerHTML = '<option value="">Select a field</option>' + state.fields.map(f => `<option value="${escapeHtml(f.broad_field)}">${escapeHtml(f.broad_field)}</option>`).join('');
+}
+
+async function loadPrograms(fieldName){
+  state.programs = await fetchJSON(`${API}/recommend/programs/${encodeURIComponent(fieldName)}`);
+  const select = byId('fieldSelect');
+  select.disabled = false;
+  select.innerHTML = '<option value="">Select a program</option>' + state.programs.map((p, idx) => `<option value="${idx}">${escapeHtml(p.program_name)} (${escapeHtml(p.program_type || 'Type N/A')})</option>`).join('');
+}
+
+async function loadFieldDetail(fieldName){
+  state.fieldDetail = await fetchJSON(`${API}/dashboard/field/${encodeURIComponent(fieldName)}`);
+}
+
+async function loadRecommendations(programName, programType){
+  state.recommendations = (await fetchJSON(`${API}/recommend/${encodeURIComponent(programName)}?program_type=${encodeURIComponent(programType || '')}&top_n=10`)).recommendations || [];
+}
+
+function buildSkillPool(recommendations){
+  const weights = new Map();
+  recommendations.forEach((rec, idx) => {
+    const strength = Math.max(1, 12 - idx);
+    (rec.top_skills || []).forEach(skill => {
+      weights.set(skill, (weights.get(skill) || 0) + strength);
+    });
+  });
+  state.aggregatedSkills = [...weights.entries()]
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([skill, weight]) => ({ skill, weight, note: 'Appears frequently across the top program recommendations.' }));
+}
+
+function renderFieldDetails(){
+  const detail = state.fieldDetail;
+  if(!detail) return;
+  byId('fieldDetails').classList.remove('hidden');
+  byId('fieldKpis').innerHTML = `
+    <div class="kpi"><small>Selected field</small><strong>${escapeHtml(detail.broad_field)}</strong><span>API dropdown value</span></div>
+    <div class="kpi"><small>Selected program</small><strong>${escapeHtml(state.selectedProgram?.program_name || 'N/A')}</strong><span>${escapeHtml(state.selectedProgram?.program_type || 'Program type unavailable')}</span></div>
+    <div class="kpi"><small>Average GCSI</small><strong>${detail.avg_gcsi != null ? detail.avg_gcsi.toFixed(1) : 'N/A'}</strong><span>Field level average</span></div>
+    <div class="kpi"><small>Automation safety</small><strong>${detail.avg_automation_risk != null ? Math.round((1 - detail.avg_automation_risk) * 100) + '%' : 'N/A'}</strong><span>Higher is safer</span></div>
+    <div class="kpi"><small>Average salary</small><strong>${moneyShort(detail.avg_salary)}</strong><span>Field level average</span></div>
+    <div class="kpi"><small>Total programs</small><strong>${fmtInt(detail.total_programs)}</strong><span>Programs in this field</span></div>
+    <div class="kpi"><small>GCSI range</small><strong>${detail.gcsi_min != null && detail.gcsi_max != null ? detail.gcsi_min.toFixed(1) + ' to ' + detail.gcsi_max.toFixed(1) : 'N/A'}</strong><span>Across top field careers</span></div>
+    <div class="kpi"><small>Top mapped career</small><strong>${[...(detail.top_careers || [])].sort((a, b) => (Number(b.avg_gcsi) || 0) - (Number(a.avg_gcsi) || 0))[0]?.career_match ? human([...(detail.top_careers || [])].sort((a, b) => (Number(b.avg_gcsi) || 0) - (Number(a.avg_gcsi) || 0))[0].career_match) : 'N/A'}</strong><span>By average GCSI score</span></div>`;
+
+  const topCareers = [...(detail.top_careers || [])]
+    .sort((a, b) => (Number(b.avg_gcsi) || 0) - (Number(a.avg_gcsi) || 0))
+    .slice(0,4);
+  const maxGcsi = Math.max(...topCareers.map(c => Number(c.avg_gcsi) || 0), 1);
+  byId('sectorList').innerHTML = topCareers.map(c => `
+    <div class="stat-row">
+      <label>${escapeHtml(human(c.career_match))}</label>
+      <div class="track"><div class="fill green" style="width:${((Number(c.avg_gcsi) || 0) / maxGcsi) * 100}%"></div></div>
+      <span>${c.avg_gcsi != null ? Number(c.avg_gcsi).toFixed(1) : 'N/A'}</span>
+    </div>`).join('') || '<div class="helper">No field level career summary available.</div>';
+
+  byId('fieldInsight').innerHTML = `
+    <strong>${escapeHtml(detail.broad_field)}</strong> is the API level field bucket used for the recommendation flow. The selected program <strong>${escapeHtml(state.selectedProgram?.program_name || 'N/A')}</strong> sits inside this field, while the recommendation endpoint will return the top ranked careers for that program. This panel is using the field detail endpoint, so the numbers here are field wide context rather than program only values.`;
+}
+
+function renderSkills(){
+  const box = byId('skillsBox');
+  if(!state.selectedProgram){
+    box.innerHTML = '';
+    byId('skillsHelper').textContent = 'Choose a program first to see the related skill options.';
+    byId('recommendBtn').disabled = true;
+    byId('skillCountHelper').textContent = '';
+    return;
+  }
+  if(!state.aggregatedSkills.length){
+    box.innerHTML = '<div class="helper">No skill suggestions were returned for this program.</div>';
+    byId('recommendBtn').disabled = true;
+    return;
+  }
+  byId('skillsHelper').textContent = `Choose up to 10 skills for ${state.selectedProgram.program_name}. These are aggregated from the top recommended careers returned by the API.`;
+  box.innerHTML = state.aggregatedSkills.map(item => `
+    <label class="skill ${state.selectedSkills.includes(item.skill) ? 'active' : ''}">
+      <input type="checkbox" value="${escapeHtml(item.skill)}" ${state.selectedSkills.includes(item.skill) ? 'checked' : ''}/>
+      <div><strong>${escapeHtml(item.skill)}</strong><span>${escapeHtml(item.note)}</span></div>
+    </label>`).join('');
+  box.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    const skill = inp.value;
+    if(inp.checked){
+      if(state.selectedSkills.length >= 10){ inp.checked = false; alert('You can choose up to 10 skills.'); return; }
+      if(!state.selectedSkills.includes(skill)) state.selectedSkills.push(skill);
+    } else {
+      state.selectedSkills = state.selectedSkills.filter(s => s !== skill);
+    }
+    renderSkills();
+  }));
+  byId('skillCountHelper').textContent = `${state.selectedSkills.length} / 10 skills selected`;
+  byId('recommendBtn').disabled = state.selectedSkills.length === 0;
+  if(state.selectedSkills.length) setStep(4);
+}
+
+async function getCareerDetail(careerName){
+  const key = String(careerName || '').trim().toLowerCase();
+  if(state.careerDetailCache.has(key)) return state.careerDetailCache.get(key);
+  const detail = await fetchJSON(`${API}/dashboard/career/${encodeURIComponent(key)}`);
+  state.careerDetailCache.set(key, detail);
+  return detail;
+}
+
+async function buildRecommendation(){
+  const base = state.recommendations || [];
+  const withScores = base.map(rec => {
+    const roleSkills = Array.isArray(rec.top_skills) ? rec.top_skills : [];
+    const matchedSkills = roleSkills.filter(skill => state.selectedSkills.includes(skill));
+    const missingSkills = roleSkills.filter(skill => !state.selectedSkills.includes(skill));
+    const readiness = roleSkills.length ? Math.round((matchedSkills.length / roleSkills.length) * 100) : 0;
+    const hybrid = Number(rec.hybrid_score || 0);
+    const gcsi = Number(rec.GCSI || 0);
+    const personalizedScore = (hybrid * 100 * 0.45) + (gcsi * 0.35) + (readiness * 0.20);
+    return { ...rec, roleSkills, matchedSkills, missingSkills, readiness, personalizedScore };
+  }).sort((a,b) => b.personalizedScore - a.personalizedScore);
+
+  const topFew = withScores.slice(0,5);
+  await Promise.all(topFew.map(async rec => {
+    try { rec.detail = await getCareerDetail(rec.career_match); } catch(e) { rec.detail = null; }
+  }));
+
+  state.personalizedRecommendations = withScores;
+  renderResult();
+}
+
+function renderResult(){
+  const ranked = state.personalizedRecommendations || [];
+  if(!ranked.length) return;
+  const best = ranked[0];
+  const detail = best.detail || null;
+  const profileName = state.profile.name || 'this viewer';
+  const ownedSkills = best.matchedSkills.length ? best.matchedSkills : state.selectedSkills;
+  const nextSkills = best.missingSkills.slice(0,5);
+  const demandPct = best.hybrid_score != null ? Math.max(12, Math.min(100, Number(best.hybrid_score) * 100)) : 0;
+  const safetyPct = best.automation_probability != null ? Math.round((1 - Number(best.automation_probability)) * 100) : (detail?.automation_safety != null ? Math.round(Number(detail.automation_safety) * 100) : 0);
+
+  byId('resultPanel').classList.remove('hidden');
+  byId('resultIntro').innerHTML = `These career paths are predicted for <strong>${escapeHtml(profileName)}</strong> based on the selected field, specific program, and chosen skills. The API provides the ranked careers, and this page personalises that list by comparing your selected skills with the returned top skills for each career.`;
+  byId('bestFitBadge').textContent = `Best fit score ${Math.round(best.personalizedScore)}`;
+  byId('bestFitTitle').textContent = human(best.career_match);
+  byId('bestFitText').innerHTML = `${human(best.career_match)} is the strongest personalised match for <strong>${escapeHtml(profileName)}</strong> inside <strong>${escapeHtml(state.selectedProgram.program_name)}</strong>. It balances your current skill overlap, the API hybrid recommendation score, and the occupation GCSI.`;
+  byId('profilePills').innerHTML = `
+    <span class="pill acc">Field: ${escapeHtml(state.selectedField)}</span>
+    <span class="pill acc">Program: ${escapeHtml(state.selectedProgram.program_name)}</span>
+    <span class="pill good">Current match: ${best.readiness}%</span>
+    <span class="pill warn">GCSI: ${best.GCSI != null ? Number(best.GCSI).toFixed(1) : 'N/A'}</span>`;
+
+  byId('fitStats').innerHTML = `
+    <div class="stat-row"><label>Current readiness</label><div class="track"><div class="fill green" style="width:${best.readiness}%"></div></div><span>${best.readiness}%</span></div>
+    <div class="stat-row"><label>Hybrid recommendation score</label><div class="track"><div class="fill" style="width:${demandPct}%"></div></div><span>${best.hybrid_score != null ? Number(best.hybrid_score).toFixed(2) : 'N/A'}</span></div>
+    <div class="stat-row"><label>Career GCSI</label><div class="track"><div class="fill warn" style="width:${Math.max(0, Math.min(100, Number(best.GCSI || 0)))}%"></div></div><span>${best.GCSI != null ? Number(best.GCSI).toFixed(1) : 'N/A'}</span></div>
+    <div class="stat-row"><label>Automation safety</label><div class="track"><div class="fill green" style="width:${safetyPct}%"></div></div><span>${safetyPct ? safetyPct + '%' : 'N/A'}</span></div>`;
+
+  byId('altOptions').innerHTML = ranked.slice(1,4).map((rec, i) => `
+    <div class="alt">
+      <div class="rank">${i + 2}</div>
+      <div><strong>${escapeHtml(human(rec.career_match))}</strong><span>Personal score ${Math.round(rec.personalizedScore)} · readiness ${rec.readiness}% · GCSI ${rec.GCSI != null ? Number(rec.GCSI).toFixed(1) : 'N/A'}</span></div>
+    </div>`).join('');
+
+  byId('ownedSkills').innerHTML = ownedSkills.length ? ownedSkills.map(skill => `<span class="pill good">${escapeHtml(skill)}</span>`).join('') : '<span class="pill warn">No direct matched skills yet</span>';
+  byId('nextSkills').innerHTML = nextSkills.length ? nextSkills.map(skill => `<span class="pill warn">${escapeHtml(skill)}</span>`).join('') : '<span class="pill good">You already cover the main tracked skills for this role</span>';
+
+  byId('readinessList').innerHTML = ranked.slice(0,5).map(rec => `
+    <div class="stat-row"><label>${escapeHtml(human(rec.career_match))}</label><div class="track"><div class="fill" style="width:${rec.readiness}%"></div></div><span>${rec.readiness}%</span></div>`).join('');
+
+  const employmentText = detail?.TOT_EMP ? `${fmtInt(detail.TOT_EMP)} estimated employed workers` : 'Employment count unavailable in the current fetch';
+  byId('actionPlan').innerHTML = `
+    <div class="action"><div class="action-num">1</div><div><strong>Focus on ${escapeHtml(human(best.career_match))}</strong><span>This is the strongest overall match after combining API ranking with your selected skills.</span></div></div>
+    <div class="action"><div class="action-num">2</div><div><strong>Build the missing skills</strong><span>${nextSkills.length ? escapeHtml(nextSkills.join(', ')) : 'You already cover the main tracked skills for this role.'}</span></div></div>
+    <div class="action"><div class="action-num">3</div><div><strong>Use your strongest skills as your pitch</strong><span>${ownedSkills.length ? escapeHtml(ownedSkills.join(', ')) : 'Add more skills to improve the personal match layer.'}</span></div></div>
+    <div class="action"><div class="action-num">4</div><div><strong>Use market context in applications</strong><span>${employmentText}. Median salary is ${money(best.A_MEDIAN)} and the field average GCSI is ${state.fieldDetail?.avg_gcsi != null ? state.fieldDetail.avg_gcsi.toFixed(1) : 'N/A'}.</span></div></div>`;
+
+  byId('resultPanel').scrollIntoView({ behavior:'smooth', block:'start' });
+  setStep(5);
+}
+
+byId('saveProfileBtn').addEventListener('click', () => {
+  state.profile = {
+    name: byId('userName').value.trim(),
+    phone: byId('userPhone').value.trim(),
+    email: byId('userEmail').value.trim()
+  };
+  byId('profileHelper').innerHTML = state.profile.name ? `Profile saved for <strong>${escapeHtml(state.profile.name)}</strong>. Continue by choosing the interested field.` : 'Profile saved. Continue by choosing the interested field.';
+  setStep(1);
+});
+
+byId('degreeEnterBtn').addEventListener('click', async () => {
+  const value = byId('degreeSelect').value;
+  if(!value){ alert('Please select a field first.'); return; }
+  try {
+    state.selectedField = value;
+    state.selectedProgram = null;
+    state.selectedSkills = [];
+    state.recommendations = [];
+    state.fieldDetail = null;
+    state.aggregatedSkills = [];
+    byId('degreeSummary').classList.remove('hidden');
+    byId('degreeSummary').innerHTML = `<strong>${escapeHtml(value)}</strong> selected. You can now choose one program from the dropdown below and press Enter program.`;
+    byId('fieldPrompt').textContent = 'Loading programs for the selected field...';
+    await loadPrograms(value);
+    byId('fieldPrompt').textContent = 'Select the specific program from the dropdown, then press Enter program to load the field context and program recommendations.';
+    byId('fieldEnterBtn').disabled = true;
+    byId('fieldDetails').classList.add('hidden');
+    byId('resultPanel').classList.add('hidden');
+    renderSkills();
+    setStep(2);
+  } catch(error) {
+    console.error(error);
+    alert(`Could not load programs: ${error.message}`);
+  }
+});
+
+byId('fieldSelect').addEventListener('change', () => {
+  const idx = byId('fieldSelect').value;
+  state.selectedProgram = idx === '' ? null : state.programs[Number(idx)];
+  state.selectedSkills = [];
+  state.recommendations = [];
+  state.aggregatedSkills = [];
+  byId('fieldEnterBtn').disabled = !state.selectedProgram;
+  byId('fieldDetails').classList.add('hidden');
+  byId('resultPanel').classList.add('hidden');
+  if(state.selectedProgram){
+    byId('fieldPrompt').textContent = `Selected program: ${state.selectedProgram.program_name} (${state.selectedProgram.program_type || 'Type N/A'}). Press Enter program to load the details.`;
+  } else {
+    byId('fieldPrompt').textContent = 'Select the specific program from the dropdown, then press Enter program to load the field context and program recommendations.';
+  }
+  renderSkills();
+});
+
+byId('fieldEnterBtn').addEventListener('click', async () => {
+  if(!state.selectedProgram){ alert('Please select a program first.'); return; }
+  try {
+    await Promise.all([
+      loadFieldDetail(state.selectedField),
+      loadRecommendations(state.selectedProgram.program_name, state.selectedProgram.program_type)
+    ]);
+    buildSkillPool(state.recommendations);
+    renderFieldDetails();
+    renderSkills();
+    setStep(3);
+  } catch(error) {
+    console.error(error);
+    alert(`Could not load program data: ${error.message}`);
+  }
+});
+
+byId('recommendBtn').addEventListener('click', async () => {
+  if(!state.selectedField || !state.selectedProgram || !state.selectedSkills.length){
+    alert('Please complete the field, program, and skill selections first.');
+    return;
+  }
+  try {
+    await buildRecommendation();
+  } catch(error) {
+    console.error(error);
+    alert(`Could not build recommendation: ${error.message}`);
+  }
+});
+
+async function init(){
+  try {
+    await loadFields();
+    setStep(0);
+  } catch(error) {
+    console.error(error);
+    byId('degreeSummary').classList.remove('hidden');
+    byId('degreeSummary').textContent = `Could not load API fields: ${error.message}`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>

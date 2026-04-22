@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerScope — US Master's Pathway Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f3ee;
+  --bg2:#edeae3;
+  --surface:#fff;
+  --surface2:#faf9f6;
+  --ink:#1a1714;
+  --ink2:#4a463f;
+  --ink3:#8a8278;
+  --accent:#5b4fcf;
+  --accent-light:#ede9ff;
+  --accent2:#0fa87e;
+  --accent2-light:#e0f7f1;
+  --warn:#e07b39;
+  --warn-light:#fef0e6;
+  --danger:#d94f4f;
+  --danger-light:#fdeaea;
+  --border:#e2ddd5;
+  --shadow:0 2px 12px rgba(26,23,20,0.07);
+  --shadow-lg:0 8px 32px rgba(26,23,20,0.10);
+  --r:16px;
+  --r-sm:10px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  font-size:15px;
+  line-height:1.6;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(91,79,207,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 85% 70%, rgba(15,168,126,0.05) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%235b4fcf' fill-opacity='0.025'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── TOP NAV ── */
+.topnav{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(26,23,20,0.06);
+}
+.topnav-inner{
+  max-width:1320px;margin:0 auto;
+  display:flex;align-items:center;
+  gap:0;padding:0 28px;
+}
+.brand-block{
+  display:flex;align-items:baseline;gap:8px;
+  padding:16px 24px 16px 0;
+  border-right:1px solid var(--border);
+  margin-right:16px;
+  flex-shrink:0;
+}
+.brand-name{
+  font-family:'DM Serif Display',serif;
+  font-size:1.45rem;color:var(--accent);
+  letter-spacing:-0.01em;
+}
+.brand-tag{
+  font-size:0.75rem;color:var(--ink3);
+  background:var(--accent-light);
+  padding:2px 8px;border-radius:999px;
+  letter-spacing:0.04em;font-weight:600;
+}
+.nav-tabs{
+  display:flex;align-items:stretch;gap:0;
+  flex:1;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{
+  display:flex;align-items:center;gap:8px;
+  padding:18px 18px;
+  border:none;background:transparent;
+  color:var(--ink3);cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:0.88rem;font-weight:500;
+  white-space:nowrap;
+  border-bottom:3px solid transparent;
+  transition:all .2s;
+  letter-spacing:0.01em;
+}
+.nav-tab:hover{color:var(--ink);background:var(--bg);}
+.nav-tab.active{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+  background:var(--accent-light);
+  font-weight:600;
+}
+.nav-tab .tab-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:700;color:var(--ink3);
+  flex-shrink:0;
+  transition:.2s;
+}
+.nav-tab.active .tab-num{
+  background:var(--accent);color:#fff;
+}
+.us-badge{
+  margin-left:auto;padding:0 28px;
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+  color:var(--ink3);font-size:0.82rem;
+}
+.us-flag{font-size:1.2rem;}
+
+/* ── PAGE WRAPPER ── */
+.page{max-width:1320px;margin:0 auto;padding:32px 28px;}
+
+/* ── VIEW ── */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:28px;}
+.page-header h2{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;font-weight:400;
+  color:var(--ink);letter-spacing:-0.02em;
+  line-height:1.2;
+}
+.page-header p{
+  color:var(--ink2);margin-top:6px;
+  font-size:0.95rem;max-width:620px;
+}
+.header-row{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:16px;
+  flex-wrap:wrap;
+}
+
+/* ── DROPDOWN ── */
+.field-selector{
+  display:flex;flex-direction:column;gap:6px;
+  font-size:0.85rem;color:var(--ink3);font-weight:500;
+}
+select{
+  font-family:'DM Sans',sans-serif;
+  font-size:0.92rem;
+  padding:10px 36px 10px 14px;
+  border-radius:var(--r-sm);
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8278' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  min-width:240px;
+  transition:border-color .2s;
+}
+select:focus{outline:none;border-color:var(--accent);}
+
+/* ── KPI GRID ── */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;margin-bottom:24px;
+}
+.kpi{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:20px;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.kpi::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:var(--r) var(--r) 0 0;
+}
+.kpi-icon{font-size:1.4rem;margin-bottom:10px;}
+.kpi-label{
+  font-size:0.78rem;font-weight:600;
+  color:var(--ink3);letter-spacing:0.06em;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.kpi-value{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;color:var(--ink);
+  line-height:1.1;
+}
+.kpi-foot{
+  margin-top:8px;font-size:0.82rem;color:var(--ink3);
+  display:flex;align-items:center;gap:4px;
+}
+.kpi-foot .up{color:var(--accent2);}
+.kpi-foot .dn{color:var(--danger);}
+
+/* ── GRID LAYOUTS ── */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px;}
+.col-span2{grid-column:span 2;}
+
+/* ── CARD ── */
+.card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+.card-head{
+  display:flex;align-items:center;
+  justify-content:space-between;gap:10px;
+  margin-bottom:18px;
+  flex-wrap:wrap;gap:8px;
+}
+.card-head h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;font-weight:400;
+  color:var(--ink);letter-spacing:-0.01em;
+}
+.chip{
+  font-size:0.75rem;font-weight:600;
+  padding:4px 10px;border-radius:999px;
+  background:var(--accent-light);color:var(--accent);
+  letter-spacing:0.03em;white-space:nowrap;
+}
+.chip.green{background:var(--accent2-light);color:var(--accent2);}
+.chip.warn{background:var(--warn-light);color:var(--warn);}
+
+/* ── LOLLIPOP CHART ── */
+.lollipop-list{display:grid;gap:14px;}
+.lollipop-row{display:grid;grid-template-columns:170px 1fr 60px;gap:10px;align-items:center;}
+.lollipop-label{font-size:0.88rem;color:var(--ink2);line-height:1.3;font-weight:500;}
+.lollipop-track{position:relative;height:28px;display:flex;align-items:center;}
+.lollipop-line{
+  height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .8s cubic-bezier(.16,1,.3,1);
+  flex-shrink:0;
+}
+.lollipop-line.warm{background:linear-gradient(90deg,var(--warn),#f5a623);}
+.lollipop-line.danger{background:linear-gradient(90deg,var(--danger),#f07070);}
+.lollipop-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--accent2);
+  border:2.5px solid white;
+  box-shadow:0 0 0 2px var(--accent2),0 2px 8px rgba(15,168,126,0.35);
+  flex-shrink:0;
+  transition:transform .2s;
+}
+.lollipop-dot.warm{background:var(--warn);box-shadow:0 0 0 2px var(--warn),0 2px 8px rgba(224,123,57,0.35);}
+.lollipop-dot.danger{background:var(--danger);box-shadow:0 0 0 2px var(--danger),0 2px 8px rgba(217,79,79,0.35);}
+.lollipop-value{text-align:right;font-size:0.85rem;color:var(--ink3);font-family:'DM Mono',monospace;font-weight:500;}
+
+/* ── RADAR CHART ── */
+.radar-wrap{display:flex;justify-content:center;padding:8px 0;}
+
+/* ── DONUT CHART ── */
+.donut-wrap{display:flex;flex-direction:column;gap:8px;}
+.donut-row{display:flex;align-items:center;gap:10px;}
+.donut-svg{flex-shrink:0;}
+.donut-info{flex:1;}
+.donut-name{font-size:.88rem;font-weight:600;color:var(--ink2);}
+.donut-val{font-size:.82rem;color:var(--ink3);font-family:'DM Mono',monospace;}
+
+/* ── SCATTER ENHANCEMENTS ── */
+.scatter-wrap{
+  width:100%;aspect-ratio:3/2;
+  position:relative;
+}
+svg.scatter{width:100%;height:100%;}
+.quadrant-label{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;opacity:0.4;}
+.trend-line{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5,3;opacity:0.5;}
+
+/* ── BAR LIST (kept for salary/skill gap bars) ── */
+.bar-list{display:grid;gap:12px;}
+.bar-row{display:grid;grid-template-columns:170px 1fr 60px;gap:10px;align-items:center;}
+.bar-label{font-size:0.88rem;color:var(--ink2);line-height:1.3;font-weight:500;}
+.bar-track{
+  height:12px;background:var(--bg2);
+  border-radius:999px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.bar-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .8s cubic-bezier(.16,1,.3,1);
+}
+.bar-fill.warm{background:linear-gradient(90deg,var(--warn),#f5a623);}
+.bar-fill.danger{background:linear-gradient(90deg,var(--danger),#f07070);}
+.bar-value{text-align:right;font-size:0.85rem;color:var(--ink3);font-family:'DM Mono',monospace;font-weight:500;}
+
+/* ── SECTOR GRID ── */
+.sector-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.sector-card{
+  padding:14px 16px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border);
+  background:var(--surface2);
+  transition:border-color .2s,transform .2s;
+}
+.sector-card:hover{border-color:var(--accent);transform:translateY(-1px);}
+.sector-card strong{display:block;font-size:0.92rem;margin-bottom:4px;color:var(--ink);}
+.sector-card span{color:var(--ink3);font-size:0.82rem;}
+.sector-dot{
+  display:inline-block;width:8px;height:8px;
+  border-radius:50%;margin-right:6px;
+  vertical-align:middle;
+}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th,.tbl td{
+  padding:11px 12px;
+  border-bottom:1px solid var(--bg2);
+  text-align:left;font-size:0.88rem;
+}
+.tbl th{
+  color:var(--ink3);font-weight:700;
+  font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;
+  background:var(--surface2);
+}
+.tbl td{color:var(--ink2);}
+.tbl tr:last-child td{border-bottom:0;}
+.tbl tr:hover td{background:var(--bg);}
+.pill{
+  display:inline-block;padding:3px 10px;
+  border-radius:999px;font-size:0.78rem;font-weight:600;
+}
+.pill.good{background:var(--accent2-light);color:var(--accent2);}
+.pill.mid{background:var(--warn-light);color:var(--warn);}
+.pill.low{background:var(--danger-light);color:var(--danger);}
+
+/* ── INSIGHT BOX ── */
+.insight-box{
+  background:linear-gradient(135deg,var(--accent-light),var(--accent2-light));
+  border:1.5px solid rgba(91,79,207,0.15);
+  border-radius:var(--r);padding:20px;
+  color:var(--ink2);line-height:1.75;font-size:0.92rem;
+  min-height:200px;
+}
+.insight-box strong{color:var(--ink);}
+
+/* ── SCATTER SVG CLASSES ── */
+.axis-label{fill:#8a8278;font-family:'DM Sans',sans-serif;font-size:11px;}
+.axis-line{stroke:#c8c0b4;stroke-width:1.5;}
+.grid-line{stroke:#e2ddd5;stroke-width:1;stroke-dasharray:3,3;}
+.point-label{fill:#1a1714;font-family:'DM Sans',sans-serif;}
+.quadrant-label{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
+.trend-line{stroke:#5b4fcf;stroke-width:1.5;stroke-dasharray:5,3;opacity:0.45;}
+  width:100%;aspect-ratio:3/2;
+  position:relative;
+}
+svg.scatter{width:100%;height:100%;}
+
+/* ── GAUGE ── */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0;}
+.gauge-arc{position:relative;width:180px;height:90px;overflow:hidden;}
+.gauge-arc svg{width:100%;}
+.gauge-val{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  font-family:'DM Serif Display',serif;font-size:2rem;color:var(--ink);
+}
+.gauge-label{color:var(--ink3);font-size:0.85rem;}
+
+/* ── SKILL CARDS ── */
+.skill-cluster{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:4px 0;
+}
+.skill-tag{
+  padding:6px 14px;border-radius:999px;
+  font-size:0.82rem;font-weight:600;
+  border:1.5px solid var(--border);
+  background:var(--surface2);color:var(--ink2);
+  transition:all .2s;cursor:default;
+}
+.skill-tag:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.skill-tag.hot{border-color:var(--accent2);color:var(--accent2);background:var(--accent2-light);}
+.skill-tag.rising{border-color:var(--warn);color:var(--warn);background:var(--warn-light);}
+.skill-tag.fading{border-color:#ccc;color:#aaa;background:#f5f5f5;}
+
+/* ── TREND STRIP ── */
+.trend-strip{
+  display:flex;gap:10px;overflow-x:auto;
+  padding:12px 0;scrollbar-width:none;flex-wrap:wrap;
+}
+.trend-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:999px;
+  font-size:0.8rem;font-weight:600;
+  white-space:nowrap;
+  border:1.5px solid var(--border);
+  background:var(--surface);
+}
+.trend-pill .arrow{font-size:0.75rem;}
+.trend-pill.up{border-color:var(--accent2);color:var(--accent2);background:var(--accent2-light);}
+.trend-pill.dn{border-color:var(--danger);color:var(--danger);background:var(--danger-light);}
+.trend-pill.flat{border-color:var(--border);color:var(--ink3);}
+
+/* ── PATH CARD ── */
+.path-card{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border);
+  background:var(--surface2);margin-bottom:10px;
+  transition:border-color .2s;
+}
+.path-card:hover{border-color:var(--accent);} .career-clickable{cursor:pointer;}
+.path-rank{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.9rem;flex-shrink:0;
+}
+.path-rank.gold{background:#e6a817;}
+.path-rank.silver{background:#8d8d9a;}
+.path-rank.bronze{background:#b97a50;}
+.path-info strong{display:block;font-size:0.95rem;color:var(--ink);margin-bottom:3px;}
+.path-info span{font-size:0.82rem;color:var(--ink3);}
+.path-score{
+  margin-left:auto;
+  font-family:'DM Serif Display',serif;
+  font-size:1.5rem;color:var(--accent);flex-shrink:0;
+}
+
+/* ── SKILL GAP BAR ── */
+.gap-row{margin-bottom:14px;}
+.gap-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
+.gap-labels .skill-name{font-size:0.88rem;font-weight:600;color:var(--ink2);}
+.gap-labels .gap-pct{font-size:0.82rem;color:var(--danger);font-family:'DM Mono',monospace;}
+.gap-tracks{display:grid;gap:4px;}
+.gap-track-row{display:flex;align-items:center;gap:8px;}
+.gap-track-label{font-size:0.74rem;color:var(--ink3);width:52px;flex-shrink:0;font-weight:600;}
+.gap-track{flex:1;height:10px;background:var(--bg2);border-radius:999px;overflow:hidden;}
+.gap-fill-jobs{background:var(--accent);height:100%;border-radius:999px;}
+.gap-fill-grads{background:var(--accent2);height:100%;border-radius:999px;}
+
+/* ── LEARNING PATH ── */
+.learn-step{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:14px 0;border-bottom:1px solid var(--bg2);
+}
+.learn-step:last-child{border-bottom:0;}
+.learn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;font-weight:700;flex-shrink:0;
+}
+.learn-body strong{font-size:0.92rem;color:var(--ink);display:block;margin-bottom:2px;}
+.learn-body span{font-size:0.82rem;color:var(--ink3);}
+
+/* ── DIVIDER ── */
+.section-label{
+  font-size:0.72rem;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--ink3);
+  margin-bottom:12px;margin-top:4px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .col-span2{grid-column:auto;}
+}
+@media(max-width:600px){
+  .page{padding:20px 16px;}
+  .topnav-inner{padding:0 16px;}
+  .kpi-grid{grid-template-columns:1fr;}
+  .brand-tag{display:none;}
+  .bar-row{grid-template-columns:1fr;}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.view.active .card,.view.active .kpi{
+  animation:fadeUp .4s ease both;
+}
+.view.active .kpi:nth-child(1){animation-delay:.05s;}
+.view.active .kpi:nth-child(2){animation-delay:.1s;}
+.view.active .kpi:nth-child(3){animation-delay:.15s;}
+.view.active .kpi:nth-child(4){animation-delay:.2s;}
+
+/* ── DECORATIVE HEADER STRIP ── */
+.hero-strip{
+  background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 40%,var(--accent2) 100%);
+  border-radius:var(--r);
+  padding:28px 32px;
+  color:#fff;
+  margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.hero-strip::after{
+  content:'';position:absolute;
+  right:-40px;top:-40px;
+  width:220px;height:220px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.07);
+}
+.hero-strip::before{
+  content:'';position:absolute;
+  right:80px;bottom:-30px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.05);
+}
+.hero-strip h2{
+  font-family:'DM Serif Display',serif;
+  font-size:1.6rem;margin-bottom:6px;
+  position:relative;
+}
+.hero-strip p{opacity:.85;font-size:0.92rem;max-width:580px;position:relative;}
+
+.guide-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+.guide-stack{
+  display:grid;
+  gap:16px;
+}
+.guide-intro{
+  background:linear-gradient(135deg, rgba(91,79,207,0.98) 0%, rgba(15,168,126,0.94) 100%);
+  color:#fff;
+  overflow:hidden;
+  position:relative;
+}
+.guide-intro::after{
+  content:'';
+  position:absolute;
+  inset:auto -40px -40px auto;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+}
+.guide-intro h2,
+.guide-intro h3,
+.guide-intro p,
+.guide-intro .kpi-value,
+.guide-intro .kpi-label,
+.guide-intro .kpi-foot{color:#fff;}
+.guide-intro p{max-width:720px;opacity:.92;}
+.guide-bullets{
+  margin-top:14px;
+  display:grid;
+  gap:10px;
+}
+.guide-bullet{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-size:0.92rem;
+}
+.guide-bullet .dot{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.18);
+  flex-shrink:0;
+}
+.glossary-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.glossary-item{
+  padding:14px 14px 12px;
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  background:var(--surface2);
+}
+.glossary-term{
+  font-size:0.82rem;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--ink3);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.glossary-item p{
+  color:var(--ink2);
+  font-size:0.9rem;
+  line-height:1.55;
+}
+.journey-list{
+  display:grid;
+  gap:12px;
+}
+.journey-step{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:12px;
+  align-items:flex-start;
+}
+.journey-num{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--accent-light);
+  color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.9rem;
+}
+.journey-step strong{
+  display:block;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+.journey-step span{
+  color:var(--ink2);
+  font-size:0.9rem;
+}
+.insight-list{
+  display:grid;
+  gap:12px;
+}
+.insight-item{
+  padding:14px;
+  border-radius:14px;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+}
+.insight-item strong{
+  display:block;
+  margin-bottom:4px;
+}
+.insight-item span{
+  color:var(--ink2);
+  font-size:0.9rem;
+}
+@media (max-width:1100px){
+  .guide-grid{grid-template-columns:1fr;}
+}
+
+/* ── RECOMMENDATION SKILLS ── */
+.skill-select-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;}
+.skill-checklist{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+.skill-check{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 12px;border:1.5px solid var(--border);border-radius:14px;
+  background:var(--surface2);cursor:pointer;transition:.2s;
+}
+.skill-check:hover{border-color:var(--accent);transform:translateY(-1px);}
+.skill-check input{accent-color:var(--accent);margin-top:3px;flex-shrink:0;}
+.skill-check strong{display:block;font-size:.9rem;line-height:1.2;color:var(--ink);}
+.skill-check span{display:block;font-size:.76rem;color:var(--ink3);margin-top:3px;line-height:1.35;}
+.skill-check.active{border-color:var(--accent);background:var(--accent-light);}
+.skill-mini-list{display:grid;gap:10px;}
+.skill-mini-row{display:grid;grid-template-columns:minmax(0,1fr) 58px;gap:10px;align-items:center;}
+.skill-mini-row .bar{height:9px;border-radius:999px;background:var(--bg2);overflow:hidden;}
+.skill-mini-row .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.readiness-list{display:grid;gap:12px;margin-top:8px;}
+.readiness-card{padding:12px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface2);}
+.readiness-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:6px;}
+.readiness-top strong{font-size:.92rem;}
+.readiness-top span{font-size:.8rem;color:var(--ink3);}
+.match-pill{font-size:.74rem;font-weight:700;padding:4px 8px;border-radius:999px;background:var(--accent-light);color:var(--accent);}
+.missing-skill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.missing-skill{padding:6px 10px;border-radius:999px;background:var(--warn-light);color:var(--warn);font-size:.76rem;font-weight:600;border:1px solid rgba(224,123,57,.18);}
+.have-skill{padding:6px 10px;border-radius:999px;background:var(--accent2-light);color:var(--accent2);font-size:.76rem;font-weight:600;border:1px solid rgba(15,168,126,.15);}
+.skill-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+.skill-summary .summary-card{padding:14px 16px;}
+@media (max-width:1180px){.skill-checklist{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:980px){.skill-select-grid,.skill-summary{grid-template-columns:1fr;}.skill-checklist{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:640px){.skill-checklist{grid-template-columns:1fr;}}
+
+@media (max-width:760px){
+  .glossary-grid{grid-template-columns:1fr;}
+}
+
+/* ── OVERVIEW PAGE REFINEMENTS ── */
+.overview-hero{
+  background:linear-gradient(135deg, rgba(91,79,207,0.98) 0%, rgba(15,168,126,0.94) 100%);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:var(--r);
+  padding:24px 26px;
+  box-shadow:var(--shadow-lg);
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.overview-hero::after{
+  content:'';
+  position:absolute;
+  right:-60px;top:-30px;
+  width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+}
+.overview-hero > *{position:relative;z-index:1;}
+.overview-hero h2{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1.12;margin-bottom:8px;color:#fff;}
+.overview-hero p{max-width:none;font-size:0.95rem;opacity:.94;color:#fff;}
+.overview-band{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+.overview-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px;}
+.overview-point{
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  padding:14px;
+}
+.overview-point strong{display:block;font-size:0.95rem;margin-bottom:5px;color:#fff;}
+.overview-point span{font-size:0.86rem;opacity:.92;display:block;color:#fff;}
+.overview-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px;}
+.summary-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.summary-card strong{display:block;font-size:0.96rem;color:var(--ink);margin-bottom:6px;}
+.summary-card p{font-size:0.88rem;color:var(--ink2);}
+.glossary-grid.four-up{grid-template-columns:repeat(4,minmax(0,1fr));}
+.salary-panel{display:grid;gap:16px;padding-top:4px;}
+.salary-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.salary-card{
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  background:var(--surface2);
+  padding:14px;
+}
+.salary-card small{display:block;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:6px;}
+.salary-card strong{display:block;font-family:'DM Serif Display',serif;font-size:1.45rem;line-height:1;color:var(--ink);margin-bottom:4px;}
+.salary-card span{font-size:.82rem;color:var(--ink3);}
+.salary-band{padding:6px 2px 0;}
+.salary-scale{position:relative;height:54px;}
+.salary-scale::before{content:'';position:absolute;left:0;right:0;top:23px;height:10px;border-radius:999px;background:var(--bg2);border:1px solid var(--border);}
+.salary-range{position:absolute;top:23px;height:10px;border-radius:999px;background:linear-gradient(90deg,rgba(91,79,207,.28),rgba(15,168,126,.28));border:1px solid rgba(91,79,207,.14);}
+.salary-marker{position:absolute;top:10px;transform:translateX(-50%);text-align:center;min-width:76px;}
+.salary-marker .pin{width:14px;height:14px;border-radius:50%;margin:0 auto 4px;border:3px solid #fff;box-shadow:0 0 0 2px currentColor,0 2px 8px rgba(26,23,20,0.1);}
+.salary-marker .role{font-size:.76rem;font-weight:700;color:var(--ink2);display:block;line-height:1.1;}
+.salary-marker .amt{font-size:.8rem;font-family:'DM Mono',monospace;color:var(--ink3);display:block;margin-top:2px;}
+.salary-axis{display:flex;justify-content:space-between;margin-top:12px;font-size:.76rem;color:var(--ink3);font-family:'DM Mono',monospace;}
+@media (max-width:1100px){
+  .overview-band,.overview-summary{grid-template-columns:1fr;}
+  .glossary-grid.four-up{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+
+/* ── RECOMMENDATION SKILLS ── */
+.skill-select-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;}
+.skill-checklist{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+.skill-check{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 12px;border:1.5px solid var(--border);border-radius:14px;
+  background:var(--surface2);cursor:pointer;transition:.2s;
+}
+.skill-check:hover{border-color:var(--accent);transform:translateY(-1px);}
+.skill-check input{accent-color:var(--accent);margin-top:3px;flex-shrink:0;}
+.skill-check strong{display:block;font-size:.9rem;line-height:1.2;color:var(--ink);}
+.skill-check span{display:block;font-size:.76rem;color:var(--ink3);margin-top:3px;line-height:1.35;}
+.skill-check.active{border-color:var(--accent);background:var(--accent-light);}
+.skill-mini-list{display:grid;gap:10px;}
+.skill-mini-row{display:grid;grid-template-columns:minmax(0,1fr) 58px;gap:10px;align-items:center;}
+.skill-mini-row .bar{height:9px;border-radius:999px;background:var(--bg2);overflow:hidden;}
+.skill-mini-row .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.readiness-list{display:grid;gap:12px;margin-top:8px;}
+.readiness-card{padding:12px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface2);}
+.readiness-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:6px;}
+.readiness-top strong{font-size:.92rem;}
+.readiness-top span{font-size:.8rem;color:var(--ink3);}
+.match-pill{font-size:.74rem;font-weight:700;padding:4px 8px;border-radius:999px;background:var(--accent-light);color:var(--accent);}
+.missing-skill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.missing-skill{padding:6px 10px;border-radius:999px;background:var(--warn-light);color:var(--warn);font-size:.76rem;font-weight:600;border:1px solid rgba(224,123,57,.18);}
+.have-skill{padding:6px 10px;border-radius:999px;background:var(--accent2-light);color:var(--accent2);font-size:.76rem;font-weight:600;border:1px solid rgba(15,168,126,.15);}
+.skill-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+.skill-summary .summary-card{padding:14px 16px;}
+@media (max-width:1180px){.skill-checklist{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:980px){.skill-select-grid,.skill-summary{grid-template-columns:1fr;}.skill-checklist{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:640px){.skill-checklist{grid-template-columns:1fr;}}
+
+@media (max-width:760px){
+  .overview-points,.salary-cards,.overview-summary,.glossary-grid.four-up{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand-block">
+      <span class="brand-name">CareerScope</span>
+      <span class="brand-tag">US Edition</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-view="v0">
+        <span class="tab-num">1</span> Overview
+      </button>
+      <button class="nav-tab" data-view="v1">
+        <span class="tab-num">2</span> Market Overview
+      </button>
+      <button class="nav-tab" data-view="v2">
+        <span class="tab-num">3</span> Degree Deep Dive
+      </button>
+      <button class="nav-tab" data-view="v3">
+        <span class="tab-num">4</span> Career Paths
+      </button>
+          </div>
+    <div class="us-badge">
+      <span class="us-flag">🇺🇸</span> US Dataset
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════
+     VIEW 0 — PROJECT GUIDE
+═══════════════════════════════════════ -->
+<section id="v0" class="view active">
+  <div class="overview-hero">
+    <h2>CareerScope Overview</h2>
+    <p>CareerScope is a career intelligence dashboard that helps users explore how different master's degrees connect to future careers in the US market. It brings together career stability, salary outlook, demand signals, automation safety, and skill requirements so users can compare degrees, evaluate role options, and identify stronger long term pathways.</p>
+    <div class="overview-points">
+      <div class="overview-point"><strong>Compare degrees clearly</strong><span>See which degrees look stronger overall in stability, hiring, salary potential, and resilience.</span></div>
+      <div class="overview-point"><strong>Match degrees to careers</strong><span>Understand which jobs align most closely with each degree through GCSI-based ranking.</span></div>
+      <div class="overview-point"><strong>Spot practical next steps</strong><span>Use recommendations to identify strong options and areas for upskilling.</span></div>
+    </div>
+  </div>
+
+  <div class="overview-summary">
+    <div class="summary-card">
+      <strong>What the dashboard measures</strong>
+      <p>It combines labour market indicators with degree to role matching so the user can judge both opportunity quality and relevance at the same time.</p>
+    </div>
+    <div class="summary-card">
+      <strong>What stronger results mean</strong>
+      <p>Higher GCSI, safer automation scores, broader demand, and positive YoY movement usually point to more attractive pathways.</p>
+    </div>
+    <div class="summary-card">
+      <strong>How to interpret recommendations</strong>
+      <p>The highest ranked roles are not just popular. They balance stability and market strength, which makes them more useful for realistic career decision making.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head"><h3>Key terms explained</h3><span class="chip">Overview</span></div>
+    <div class="glossary-grid four-up">
+      <div class="glossary-item"><div class="glossary-term">GCSI score</div><p>The overall career stability score. It combines multiple labour market signals to show how resilient and attractive a field or role looks over time.</p></div>
+      <div class="glossary-item"><div class="glossary-term">Degree alignment</div><p>A simple indicator showing how closely a career connects to the selected degree based on the project mapping structure.</p></div>
+      <div class="glossary-item"><div class="glossary-term">YoY</div><p>Year over year change. It shows whether a metric such as openings or growth has moved up or down compared with the previous year.</p></div>
+      <div class="glossary-item"><div class="glossary-term">Automation safety</div><p>An indicator of how protected a field is from automation pressure. Higher values suggest work that is less exposed to replacement risk.</p></div>
+      <div class="glossary-item"><div class="glossary-term">Demand level</div><p>A signal of market activity based on hiring, employment scale, and related opportunity indicators for a field or role.</p></div>
+      <div class="glossary-item"><div class="glossary-term">Recommendation score</div><p>The final ranking signal in the recommendations dashboard. Higher values suggest a role is stronger in career stability and market outlook.</p></div>
+      <div class="glossary-item"><div class="glossary-term">Salary range</div><p>The expected spread from entry to senior level earnings. It gives a simple view of income progression rather than a single salary snapshot.</p></div>
+    </div>
+  </div>
+
+  <div class="overview-band">
+    <div class="card">
+      <div class="card-head"><h3>What each dashboard helps answer</h3><span class="chip warn">Dashboard map</span></div>
+      <div class="journey-list">
+        <div class="journey-step"><div class="journey-num">1</div><div><strong>Overview</strong><span>Defines the main ideas behind the dashboard so users can interpret the charts with less confusion.</span></div></div>
+        <div class="journey-step"><div class="journey-num">2</div><div><strong>Market Overview</strong><span>Shows which degrees are stronger overall in stability, employment, automation safety, and hiring activity.</span></div></div>
+        <div class="journey-step"><div class="journey-num">3</div><div><strong>Degree Deep Dive</strong><span>Explains one degree in detail, including GCSI components, hiring sectors, salary progression, and safety.</span></div></div>
+        <div class="journey-step"><div class="journey-num">4</div><div><strong>Career Paths</strong><span>Shows which careers align with the selected degree and how they compare in salary, stability, demand, and overall fit.</span></div></div>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>What users should take from it</h3><span class="chip green">Analytical lens</span></div>
+      <div class="insight-list">
+        <div class="insight-item"><strong>Not every high salary role is the best choice</strong><span>A stronger option is often the one that balances good pay with stability, relevance, and future safety.</span></div>
+        <div class="insight-item"><strong>The top right of comparison charts matters</strong><span>In career comparison views, roles with higher GCSI usually offer stronger market strength.</span></div>
+        <div class="insight-item"><strong>Skill gaps explain the gap between interest and readiness</strong><span>A role can look attractive on paper but still require extra skills before it becomes realistic.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     VIEW 1 — MARKET OVERVIEW
+═══════════════════════════════════════ -->
+<section id="v1" class="view">
+  <div class="hero-strip">
+    <h2>US Master's Degree Market Overview</h2>
+    <p>A bird's-eye view of all graduate degrees — see which areas are thriving, which are stable, and where opportunities are growing across the United States.</p>
+  </div>
+
+  <div class="kpi-grid" id="v1kpis"></div>
+
+  <div class="trend-strip" id="v1trends"></div>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <div class="card-head"><h3>GCSI Leaderboard</h3><span class="chip">All Degrees</span></div>
+      <div class="lollipop-list" id="v1gcsi"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Total Employment by Degree</h3><span class="chip green">US Workforce</span></div>
+      <div class="lollipop-list" id="v1jobs"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>Automation Risk</h3><span class="chip warn">Lower is safer</span></div>
+      <div class="lollipop-list" id="v1auto"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Top Hiring Sectors</h3><span class="chip">Industry Demand</span></div>
+      <div class="sector-grid" id="v1sectors"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     VIEW 2 — FIELD DEEP DIVE
+═══════════════════════════════════════ -->
+<section id="v2" class="view">
+  <div class="header-row page-header">
+    <div>
+      <h2>Degree Deep Dive</h2>
+      <p>Select a broad master's field to explore its stability score, salary outlook, top career matches, and geographic demand across the US.</p>
+    </div>
+    <div class="field-selector">
+      <span>Select your degree</span>
+      <select id="v2select"></select>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="v2kpis"></div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>GCSI Score Breakdown</h3><span class="chip">Component analysis</span></div>
+      <div class="radar-wrap" id="v2gcsiBreak"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Automation Safety</h3><span class="chip green">Safety gauge</span></div>
+      <div class="gauge-wrap" id="v2gauge"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>Top Careers in Field</h3><span class="chip">Avg GCSI ranking</span></div>
+      <div class="lollipop-list" id="v2sectors"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Salary Range</h3><span class="chip warn">Entry → Senior</span></div>
+      <div id="v2salary"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     VIEW 3 — CAREER PATHS
+═══════════════════════════════════════ -->
+<section id="v3" class="view">
+  <div class="header-row page-header">
+    <div>
+      <h2>Career Path Matching</h2>
+      <p>Explore careers related to your degree and compare them based on salary, automation safety, employment, demand, and GCSI score.</p>
+    </div>
+    <div class="field-selector" style="max-width:340px;">
+    <span>Select your degree</span>
+    <select id="v3select"></select>
+
+    <span style="margin-top:10px;display:block;">Select your program</span>
+    <select id="v3programSelect">
+      <option value="">Select your program</option>
+    </select>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="v3kpis"></div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>Salary Ranking</h3><span class="chip warn">Higher pay</span></div>
+      <div class="lollipop-list" id="v3salaryRank"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Automation Safety Ranking</h3><span class="chip green">Long term safety</span></div>
+      <div class="lollipop-list" id="v3autoRank"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>Employment Ranking</h3><span class="chip">Broader market size</span></div>
+      <div class="lollipop-list" id="v3employmentRank"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Demand vs GCSI</h3><span class="chip">Scatter view</span></div>
+      <div class="scatter-wrap"><svg id="v3scatter" class="scatter" viewBox="0 0 480 300"></svg></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>Top Career Matches</h3><span class="chip">GCSI based ranking</span></div>
+      <div id="v3matches"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Career Demand & Stability</h3><span class="chip">Role breakdown</span></div>
+      <div class="tbl-wrap"><table class="tbl" id="v3table"></table></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-head"><h3>Analyst Insight</h3><span class="chip green">AI summary</span></div>
+    <div class="insight-box" id="v3insight" style="min-height:auto;"></div>
+  </div>
+
+</section>
+
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-head"><h3>Need personalised recommendations?</h3><span class="chip">Separate tool</span></div>
+  <p style="color:var(--ink2);font-size:0.92rem;">Open the dedicated recommendations page for ranked careers, required skills, and skill match insights.</p>
+  <div style="margin-top:12px;"><a href="recommendations.html" style="display:inline-block;padding:10px 14px;border-radius:12px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;">Open recommendations page</a></div>
+</div>
+
+</div><!-- /page -->
+
+
+<script>
+const API = 'https://careerscope-api-production.up.railway.app';
+
+const state = {
+  overview: [],
+  fields: [],
+  fieldCache: new Map(),
+  programCache: new Map(),
+  careerCache: new Map()
+};
+
+function fetchJSON(url) {
+  return fetch(url).then(async (r) => {
+    const data = await r.json();
+    if (!r.ok) throw new Error(data?.detail || `Request failed: ${r.status}`);
+    return data;
+  });
+}
+
+function humanCareer(name) {
+  if (!name) return 'N/A';
+  return String(name).replace(/\b\w/g, (m) => m.toUpperCase());
+}
+
+function moneyShort(value) {
+  if (value == null || Number.isNaN(value)) return 'N/A';
+  return `$${Math.round(value / 1000)}K`;
+}
+
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function moneyFull(value) {
+  if (value == null || Number.isNaN(value)) return 'N/A';
+  return '$' + Math.round(value).toLocaleString();
+}
+
+function renderKPIs(containerID, kpis) {
+  const el = document.getElementById(containerID);
+  if (!el) return;
+  if (!kpis || kpis.length === 0) {
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = kpis.map(k => `
+    <div class="kpi">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-foot">${k.foot}</div>
+    </div>
+  `).join('');
+}
+
+function renderLollipop(containerID, items, colorClass = '', showRank = false) {
+  const el = document.getElementById(containerID);
+  if (!el) return;
+  if (!items || items.length === 0) {
+    el.innerHTML = '<p style="color:var(--ink3);font-size:.9rem;">No data available.</p>';
+    return;
+  }
+  const max = Math.max(...items.map(i => Number(i.val) || 0), 1);
+  el.innerHTML = items.map((it, idx) => {
+    const v = Number(it.val) || 0;
+    const width = Math.max(8, (v / max) * 100);
+    const rankBadge = showRank
+      ? `<div style="width:22px;height:22px;border-radius:50%;background:${idx<3?'var(--accent)':'var(--bg2)'};color:${idx<3?'#fff':'var(--ink3)'};display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0">${idx + 1}</div>`
+      : '';
+    return `
+      <div class="lollipop-row" style="${showRank ? 'grid-template-columns:26px 1fr 1fr 68px;' : ''}">
+        ${rankBadge}
+        <div class="lollipop-label">${it.label}</div>
+        <div class="lollipop-track">
+          <div class="lollipop-line ${colorClass}" style="width:calc(${width}% - 14px)"></div>
+          <div class="lollipop-dot ${colorClass}"></div>
+        </div>
+        <div class="lollipop-value">${it.display ?? it.val}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRadar(containerID, items) {
+  const el = document.getElementById(containerID);
+  if (!el || !items || items.length === 0) return;
+  const size = 320, cx = size / 2, cy = 166, r = 86;
+  const n = items.length;
+  const angles = items.map((_, i) => (i / n) * Math.PI * 2 - Math.PI / 2);
+  const toXY = (angle, radius) => [cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius];
+
+  let html = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" style="overflow:visible">`;
+  [0.25, 0.5, 0.75, 1].forEach(scale => {
+    const pts = angles.map(a => toXY(a, r * scale).join(',')).join(' ');
+    html += `<polygon points="${pts}" fill="none" stroke="#e2ddd5" stroke-width="1" opacity="${scale === 1 ? 0.8 : 0.5}"/>`;
+  });
+  angles.forEach(a => {
+    const [x, y] = toXY(a, r);
+    html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e2ddd5" stroke-width="1"/>`;
+  });
+  const dataPts = items.map((_, i) => {
+    const val = (items[i].val || 0) / 100;
+    return toXY(angles[i], r * val).join(',');
+  }).join(' ');
+  html += `<polygon points="${dataPts}" fill="rgba(91,79,207,0.15)" stroke="#5b4fcf" stroke-width="2.5" stroke-linejoin="round"/>`;
+  items.forEach((it, i) => {
+    const val = (it.val || 0) / 100;
+    const [x, y] = toXY(angles[i], r * val);
+    html += `<circle cx="${x}" cy="${y}" r="6" fill="#5b4fcf" stroke="white" stroke-width="3"/>`;
+  });
+  items.forEach((it, i) => {
+    const [x, y] = toXY(angles[i], r + 40);
+    const cos = Math.cos(angles[i]);
+    const anchor = cos < -0.2 ? 'end' : cos > 0.2 ? 'start' : 'middle';
+    const words = it.label.split(' ');
+    const midpoint = Math.ceil(words.length / 2);
+    const line1 = words.slice(0, midpoint).join(' ');
+    const line2 = words.slice(midpoint).join(' ');
+    const valueY = line2 ? y + 30 : y + 18;
+    html += `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="DM Sans,sans-serif" font-size="10.5" font-weight="700" fill="#4a463f">`;
+    html += `<tspan x="${x}" dy="0">${line1}</tspan>`;
+    if (line2) html += `<tspan x="${x}" dy="13">${line2}</tspan>`;
+    html += `</text>`;
+    html += `<text x="${x}" y="${valueY}" text-anchor="${anchor}" font-family="DM Mono,monospace" font-size="9.5" fill="#8a8278">${Math.round(it.val)}</text>`;
+  });
+  html += '</svg>';
+  el.innerHTML = html;
+}
+
+function renderGauge(containerID, val) {
+  const el = document.getElementById(containerID);
+  if (!el) return;
+  const angle = (val / 100) * 180;
+  const r = 80, cx = 100, cy = 100;
+  const toXY = (a) => [cx + r * Math.cos((180 + a) * Math.PI / 180), cy + r * Math.sin((180 + a) * Math.PI / 180)];
+  const [x2, y2] = toXY(angle);
+  const col = val > 75 ? '#0fa87e' : val > 50 ? '#e07b39' : '#d94f4f';
+  el.innerHTML = `
+    <svg viewBox="0 0 200 110" style="width:200px">
+      <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e2ddd5" stroke-width="16" stroke-linecap="round"/>
+      <path d="M 20 100 A 80 80 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="${col}" stroke-width="16" stroke-linecap="round"/>
+      <text x="100" y="90" text-anchor="middle" font-family="DM Serif Display,serif" font-size="28" fill="${col}">${Math.round(val)}</text>
+      <text x="100" y="105" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8a8278">out of 100</text>
+    </svg>
+    <div class="gauge-label">${val >= 75 ? '✅ High Safety' : val >= 50 ? '⚠️ Moderate Risk' : '❌ Higher Risk'}</div>
+  `;
+}
+
+function renderSalary(containerID, values) {
+  const el = document.getElementById(containerID);
+  if (!el) return;
+  const sorted = (values || []).filter(v => v != null).sort((a, b) => a - b);
+  if (sorted.length === 0) {
+    el.innerHTML = '<p style="color:var(--ink3);font-size:.9rem;">No salary data available.</p>';
+    return;
+  }
+  const entry = Math.round(sorted[0] / 1000);
+  const mid = Math.round((sorted[Math.floor(sorted.length / 2)] || sorted[0]) / 1000);
+  const senior = Math.round(sorted[sorted.length - 1] / 1000);
+  const minAxis = Math.floor(entry * 0.9 / 10) * 10;
+  const maxAxis = Math.ceil(senior * 1.1 / 10) * 10;
+  const axisSpan = maxAxis - minAxis || 1;
+  const pos = v => ((v - minAxis) / axisSpan) * 100;
+  el.innerHTML = `
+    <div class="salary-panel">
+      <div class="salary-cards">
+        <div class="salary-card"><small>Lower range</small><strong>$${entry}K</strong><span>Lower salary among top field matches</span></div>
+        <div class="salary-card"><small>Mid range</small><strong>$${mid}K</strong><span>Middle salary among top field matches</span></div>
+        <div class="salary-card"><small>Upper range</small><strong>$${senior}K</strong><span>Upper salary among top field matches</span></div>
+      </div>
+      <div class="salary-band">
+        <div class="salary-scale">
+          <div class="salary-range" style="left:${pos(entry)}%;width:${pos(senior) - pos(entry)}%"></div>
+          <div class="salary-marker" style="left:${pos(entry)}%;color:#5b4fcf"><div class="pin" style="background:#5b4fcf"></div><span class="role">Low</span><span class="amt">$${entry}K</span></div>
+          <div class="salary-marker" style="left:${pos(mid)}%;color:#0891b2"><div class="pin" style="background:#0891b2"></div><span class="role">Mid</span><span class="amt">$${mid}K</span></div>
+          <div class="salary-marker" style="left:${pos(senior)}%;color:#0fa87e"><div class="pin" style="background:#0fa87e"></div><span class="role">High</span><span class="amt">$${senior}K</span></div>
+        </div>
+        <div class="salary-axis"><span>$${minAxis}K</span><span>$${Math.round((minAxis + maxAxis) / 2)}K</span><span>$${maxAxis}K</span></div>
+      </div>
+      <p style="color:var(--ink3);font-size:.78rem;margin-top:2px">Range derived from the top careers in the selected field.</p>
+    </div>
+  `;
+}
+
+function renderScatterFromRecommendations(svgID, items) {
+  const svg = document.getElementById(svgID);
+  if (!svg) return;
+  if (!items || items.length === 0) {
+    svg.innerHTML = '';
+    return;
+  }
+  const W = 480, H = 300, pad = 50;
+  const xMax = Math.max(...items.map(i => i.hybrid_score || 0), 0.7);
+  const yMax = Math.max(...items.map(i => i.GCSI || 0), 60);
+  const tx = x => pad + (x / (xMax || 1)) * (W - 2 * pad);
+  const ty = y => (H - pad) - (y / (yMax || 1)) * (H - 2 * pad);
+  let html = '';
+  [0.2,0.4,0.6,0.8,1].forEach(frac => {
+    html += `<line x1="${tx(xMax * frac)}" y1="${pad}" x2="${tx(xMax * frac)}" y2="${H-pad}" class="grid-line"/>`;
+    html += `<line x1="${pad}" y1="${ty(yMax * frac)}" x2="${W-pad}" y2="${ty(yMax * frac)}" class="grid-line"/>`;
+  });
+  html += `<line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" class="axis-line"/>`;
+  html += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" class="axis-line"/>`;
+  html += `<text x="${W/2}" y="${H-8}" class="axis-label" text-anchor="middle">Hybrid Score</text>`;
+  html += `<text x="14" y="${H/2}" class="axis-label" text-anchor="middle" transform="rotate(-90,14,${H/2})">GCSI</text>`;
+  const sorted = [...items].sort((a, b) => (a.GCSI || 0) - (b.GCSI || 0));
+  sorted.forEach((c, idx) => {
+    const x = tx(c.hybrid_score || 0);
+    const y = ty(c.GCSI || 0);
+    const isTop = idx === sorted.length - 1;
+    html += `<circle cx="${x}" cy="${y}" r="${isTop ? 8 : 6}" fill="${isTop ? 'var(--accent2)' : 'var(--accent)'}" opacity="0.9"></circle>`;
+    html += `<text x="${x + 8}" y="${y - 8}" font-size="10" class="point-label">${humanCareer(c.career_match).slice(0, 20)}</text>`;
+  });
+  svg.innerHTML = html;
+}
+
+function renderRecommendationList(recs) {
+  const items = Array.isArray(recs?.recommendations) ? recs.recommendations : [];
+  const target = document.getElementById('v3matches');
+  if (!target) return;
+  if (items.length === 0) {
+    target.innerHTML = '<p style="color:var(--ink3);font-size:.9rem;">No recommendations found.</p>';
+    return;
+  }
+  target.innerHTML = items.slice(0, 10).map((career, index) => `
+    <div class="path-card career-clickable" data-career="${String(career.career_match).replace(/&/g, "&amp;").replace(/"/g, "&quot;")}">
+      <div class="path-rank ${index===0?'gold':index===1?'silver':index===2?'bronze':''}">${index + 1}</div>
+      <div class="path-info">
+        <strong>${humanCareer(career.career_match)}</strong>
+        <span>GCSI: ${career.GCSI != null ? career.GCSI.toFixed(1) : 'N/A'} · Salary: ${moneyFull(career.A_MEDIAN)} · Hybrid: ${career.hybrid_score != null ? career.hybrid_score.toFixed(2) : 'N/A'}</span>
+      </div>
+      <div class="path-score">${career.GCSI != null ? career.GCSI.toFixed(1) : '-'}</div>
+    </div>
+  `).join('');
+}
+
+function renderCareerTable(tableID, items, detailMap = new Map()) {
+  const el = document.getElementById(tableID);
+  if (!el) return;
+  el.innerHTML = `
+    <thead><tr><th>Career</th><th>GCSI</th><th>Salary</th><th>Employment</th></tr></thead>
+    <tbody>${items.slice(0, 10).map(item => {
+      const detail = detailMap.get((item.career_match || '').toLowerCase());
+      return `<tr><td><strong>${humanCareer(item.career_match)}</strong></td><td>${item.GCSI != null ? item.GCSI.toFixed(1) : 'N/A'}</td><td>${moneyFull(item.A_MEDIAN)}</td><td>${detail?.TOT_EMP ? Math.round(detail.TOT_EMP).toLocaleString() : 'N/A'}</td></tr>`;
+    }).join('')}</tbody>
+  `;
+}
+
+async function getCareerDetail(careerName) {
+  const raw = String(careerName || '').trim();
+  const key = raw.toLowerCase();
+  if (state.careerCache.has(key)) return state.careerCache.get(key);
+
+  const matches = await fetchJSON(`${API}/dashboard/careers/search?q=${encodeURIComponent(raw)}`);
+  if (Array.isArray(matches) && matches.length) {
+    const exact = matches.find(m => String(m.occupation_name || '').toLowerCase() === key);
+    const best = exact || matches[0];
+    const retryKey = String(best.occupation_name || '').trim().toLowerCase();
+    if (!retryKey) throw new Error('No valid occupation name found');
+    const detail = await fetchJSON(`${API}/dashboard/career/${encodeURIComponent(retryKey)}`);
+    state.careerCache.set(key, detail);
+    return detail;
+  }
+  throw new Error(`Career detail not found for ${raw}`);
+}
+
+async function handleCareerClick(careerName) {
+  try {
+    const detail = await getCareerDetail(careerName);
+    const insight = document.getElementById('v3insight');
+    if (!insight) return;
+    const skills = Array.isArray(detail.top_skills) && detail.top_skills.length
+      ? detail.top_skills.map(s => `<span class="have-skill">${s}</span>`).join('')
+      : '<span class="missing-skill">Skills not available</span>';
+    insight.innerHTML = `
+      <strong>${humanCareer(detail.career_match)}</strong><br/><br/>
+      <strong>GCSI:</strong> ${detail.GCSI != null ? detail.GCSI.toFixed(1) : 'N/A'}<br/>
+      <strong>Median salary:</strong> ${moneyFull(detail.A_MEDIAN)}<br/>
+      <strong>Total employment:</strong> ${detail.TOT_EMP ? Math.round(detail.TOT_EMP).toLocaleString() : 'N/A'}<br/>
+      <strong>Automation safety:</strong> ${detail.automation_safety != null ? Math.round(detail.automation_safety * 100) + '%' : 'N/A'}<br/>
+      <strong>Technology tools:</strong> ${detail.technology_items ?? 'N/A'} total, ${detail.hot_tech_items ?? 'N/A'} hot tools<br/><br/>
+      <strong>Top skills</strong>
+      <div class="missing-skill-list" style="margin-top:10px">${skills}</div>
+    `;
+  } catch (error) {
+    console.error('Career detail fetch failed:', error);
+  }
+}
+
+async function loadOverview() {
+  if (state.overview.length) return state.overview;
+  state.overview = await fetchJSON(`${API}/dashboard/overview`);
+  return state.overview;
+}
+
+async function loadFields() {
+  if (state.fields.length) return state.fields;
+  state.fields = await fetchJSON(`${API}/recommend/fields`);
+  return state.fields;
+}
+
+async function loadFieldDetail(fieldName) {
+  if (state.fieldCache.has(fieldName)) return state.fieldCache.get(fieldName);
+  const detail = await fetchJSON(`${API}/dashboard/field/${encodeURIComponent(fieldName)}`);
+  state.fieldCache.set(fieldName, detail);
+  return detail;
+}
+
+async function loadProgramsForField(fieldName) {
+  if (state.programCache.has(fieldName)) return state.programCache.get(fieldName);
+  const programs = await fetchJSON(`${API}/recommend/programs/${encodeURIComponent(fieldName)}`);
+  state.programCache.set(fieldName, programs);
+  return programs;
+}
+
+async function loadRecommendations(programName, programType) {
+  return fetchJSON(`${API}/recommend/${encodeURIComponent(programName)}?program_type=${encodeURIComponent(programType)}&top_n=10`);
+}
+
+function populateFieldSelects(fields) {
+  ['v2select', 'v3select'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = fields.map(f => `<option value="${f.broad_field}">${f.broad_field}</option>`).join('');
+  });
+}
+
+function updateHeadingText() {
+  const v1heads = document.querySelectorAll('#v1 .card-head h3');
+  if (v1heads[1]) v1heads[1].textContent = 'Program Count by Field';
+  if (v1heads[3]) v1heads[3].textContent = 'Top Careers by Field';
+  const v2heads = document.querySelectorAll('#v2 .card-head h3');
+  if (v2heads[0]) v2heads[0].textContent = 'Field Profile Breakdown';
+  if (v2heads[2]) v2heads[2].textContent = 'Top Careers in Field';
+}
+
+async function buildV1() {
+  const overview = await loadOverview();
+  const byGcsi = [...overview].sort((a, b) => (b.avg_gcsi || 0) - (a.avg_gcsi || 0));
+  const bySalary = [...overview].filter(x => x.avg_salary != null).sort((a, b) => (b.avg_salary || 0) - (a.avg_salary || 0));
+  const safest = [...overview].sort((a, b) => (a.avg_automation_risk || 1) - (b.avg_automation_risk || 1));
+
+  renderKPIs('v1kpis', [
+    { icon: '🎓', label: 'Fields Tracked', value: overview.length, foot: 'Broad academic fields' },
+    { icon: '📈', label: 'Highest Avg GCSI', value: byGcsi[0]?.avg_gcsi?.toFixed(1) || 'N/A', foot: byGcsi[0]?.broad_field || 'N/A' },
+    { icon: '💰', label: 'Highest Avg Salary', value: moneyShort(bySalary[0]?.avg_salary), foot: bySalary[0]?.broad_field || 'N/A' },
+    { icon: '🛡️', label: 'Safest Field', value: safest[0]?.broad_field || 'N/A', foot: safest[0]?.avg_automation_risk != null ? `${Math.round((1 - safest[0].avg_automation_risk) * 100)}% safety` : 'N/A' }
+  ]);
+
+  document.getElementById('v1trends').innerHTML = byGcsi.slice(0, 8).map(item => `
+    <div class="trend-pill up"><span class="arrow">↑</span>${item.broad_field} · GCSI ${item.avg_gcsi?.toFixed(1)}</div>
+  `).join('');
+
+  renderLollipop('v1gcsi', byGcsi.map(x => ({
+    label: x.broad_field,
+    val: x.avg_gcsi || 0,
+    display: x.avg_gcsi != null ? x.avg_gcsi.toFixed(1) : 'N/A'
+  })), '', true);
+
+  renderLollipop('v1jobs', [...overview].sort((a, b) => (b.program_count || 0) - (a.program_count || 0)).map(x => ({
+    label: x.broad_field,
+    val: x.program_count || 0,
+    display: (x.program_count || 0).toLocaleString()
+  })), '', true);
+
+  renderLollipop('v1auto', [...overview].sort((a, b) => (a.avg_automation_risk || 1) - (b.avg_automation_risk || 1)).map(x => ({
+    label: x.broad_field,
+    val: (1 - (x.avg_automation_risk || 0)) * 100,
+    display: `${Math.round((1 - (x.avg_automation_risk || 0)) * 100)}%`
+  })), '', true);
+
+  const sectorsEl = document.getElementById('v1sectors');
+  if (sectorsEl) {
+    sectorsEl.innerHTML = overview.slice(0, 6).map(x => `
+      <div class="sector-card">
+        <strong>${x.broad_field}</strong>
+        <span>${(x.top_careers || []).slice(0, 3).map(humanCareer).join(' • ')}</span>
+      </div>
+    `).join('');
+  }
+}
+
+async function buildV2(fieldName) {
+  const detail = await loadFieldDetail(fieldName);
+  const overview = await loadOverview();
+  const maxPrograms = Math.max(...overview.map(x => x.program_count || 0), 1);
+  const maxSalary = Math.max(...overview.map(x => x.avg_salary || 0), 1);
+
+  renderKPIs('v2kpis', [
+    { icon: '📊', label: 'Average GCSI', value: detail.avg_gcsi != null ? detail.avg_gcsi.toFixed(1) : 'N/A', foot: detail.broad_field },
+    { icon: '🤖', label: 'Automation Safety', value: `${Math.round((1 - (detail.avg_automation_risk || 0)) * 100)}%`, foot: 'Higher is safer' },
+    { icon: '💰', label: 'Average Salary', value: moneyShort(detail.avg_salary), foot: 'Across top field matches' },
+    { icon: '🎓', label: 'Programs in Field', value: (detail.total_programs || 0).toLocaleString(), foot: 'Mapped graduate programs' }
+  ]);
+
+  const topCareerPrograms = Math.max(...(detail.top_careers || []).map(x => x.program_count || 0), 1);
+  renderRadar('v2gcsiBreak', [
+    { label: 'Average GCSI', val: detail.avg_gcsi || 0 },
+    { label: 'Salary Strength', val: ((detail.avg_salary || 0) / maxSalary) * 100 },
+    { label: 'Automation Safety', val: (1 - (detail.avg_automation_risk || 0)) * 100 },
+    { label: 'Program Breadth', val: ((detail.total_programs || 0) / maxPrograms) * 100 },
+    { label: 'Career Depth', val: ((topCareerPrograms || 0) / (detail.total_programs || 1)) * 100 }
+  ]);
+
+  renderGauge('v2gauge', (1 - (detail.avg_automation_risk || 0)) * 100);
+
+  const topCareersByGcsi = [...(detail.top_careers || [])]
+    .sort((a, b) => (b.avg_gcsi || 0) - (a.avg_gcsi || 0))
+    .slice(0, 8);
+
+  renderLollipop('v2sectors', topCareersByGcsi.map(x => ({
+    label: humanCareer(x.career_match),
+    val: x.avg_gcsi || 0,
+    display: x.avg_gcsi != null ? x.avg_gcsi.toFixed(1) : 'N/A'
+  })));
+
+  renderSalary('v2salary', (detail.top_careers || []).map(x => x.avg_salary).filter(Boolean));
+}
+
+async function enrichWithCareerDetails(items, maxCount = 8) {
+  const subset = items.slice(0, maxCount);
+  const details = await Promise.all(subset.map(async item => {
+    try {
+      const detail = await getCareerDetail(item.career_match);
+      return [String(item.career_match).toLowerCase(), detail];
+    } catch {
+      return [String(item.career_match).toLowerCase(), null];
+    }
+  }));
+  return new Map(details);
+}
+
+function renderEmploymentRanking(detailMap, items) {
+  const rows = items.slice(0, 8).map(item => {
+    const detail = detailMap.get((item.career_match || '').toLowerCase());
+    return {
+      label: humanCareer(item.career_match),
+      val: detail?.TOT_EMP || 0,
+      display: detail?.TOT_EMP ? Math.round(detail.TOT_EMP).toLocaleString() : 'N/A'
+    };
+  }).sort((a, b) => b.val - a.val);
+  renderLollipop('v3employmentRank', rows);
+}
+
+function renderSalaryRanking(items) {
+  const rows = items.filter(x => x.A_MEDIAN != null).slice(0, 8).sort((a, b) => (b.A_MEDIAN || 0) - (a.A_MEDIAN || 0)).map(item => ({
+    label: humanCareer(item.career_match),
+    val: item.A_MEDIAN || 0,
+    display: moneyShort(item.A_MEDIAN)
+  }));
+  renderLollipop('v3salaryRank', rows);
+}
+
+function renderAutoRanking(items) {
+  const rows = items.filter(x => x.automation_probability != null).slice(0, 8).sort((a, b) => (a.automation_probability ?? 1) - (b.automation_probability ?? 1)).map(item => ({
+    label: humanCareer(item.career_match),
+    val: (1 - (item.automation_probability || 0)) * 100,
+    display: `${Math.round((1 - (item.automation_probability || 0)) * 100)}%`
+  }));
+  renderLollipop('v3autoRank', rows);
+}
+
+function renderProgramInsight(recs, detailsMap) {
+  const insight = document.getElementById('v3insight');
+  if (!insight) return;
+  const items = Array.isArray(recs?.recommendations) ? recs.recommendations : [];
+  if (!items.length) {
+    insight.innerHTML = 'No recommendation insight available.';
+    return;
+  }
+  const top = items[0];
+  const detail = detailsMap.get((top.career_match || '').toLowerCase());
+  const topSkills = Array.isArray(top.top_skills) ? top.top_skills.map(s => `<span class="have-skill">${s}</span>`).join('') : '';
+  insight.innerHTML = `
+    <strong>${recs.program_name} (${recs.program_type})</strong><br/><br/>
+    The strongest current match is <strong>${humanCareer(top.career_match)}</strong> with a hybrid score of <strong>${top.hybrid_score?.toFixed(2) ?? 'N/A'}</strong> and a GCSI of <strong>${top.GCSI?.toFixed(1) ?? 'N/A'}</strong>.<br/><br/>
+    <strong>Why it stands out</strong><br/>
+    It combines salary ${moneyFull(top.A_MEDIAN)}, automation safety ${top.automation_probability != null ? `${Math.round((1 - top.automation_probability) * 100)}%` : 'N/A'}, and actual labour market stability in the US dataset.<br/><br/>
+    <strong>Employment signal</strong><br/>
+    ${detail?.TOT_EMP ? `${Math.round(detail.TOT_EMP).toLocaleString()} people are employed in this occupation.` : 'Employment count is not available for this role.'}<br/><br/>
+    <strong>Top skills</strong>
+    <div class="missing-skill-list" style="margin-top:10px">${topSkills || '<span class="missing-skill">Skills not available</span>'}</div>
+  `;
+}
+
+async function buildV3Program(programName, programType) {
+  const recs = await loadRecommendations(programName, programType);
+  const items = Array.isArray(recs?.recommendations) ? recs.recommendations : [];
+  if (!items.length) return;
+
+  const detailMap = await enrichWithCareerDetails(items, 10);
+  const bySalary = [...items].filter(x => x.A_MEDIAN != null).sort((a, b) => (b.A_MEDIAN || 0) - (a.A_MEDIAN || 0))[0];
+  const bySafety = [...items].filter(x => x.automation_probability != null).sort((a, b) => (a.automation_probability ?? 1) - (b.automation_probability ?? 1))[0];
+  const byOverall = [...items].sort((a, b) => (b.GCSI || 0) - (a.GCSI || 0))[0];
+  const byEmploymentCareer = [...items].sort((a, b) => (detailMap.get((b.career_match || '').toLowerCase())?.TOT_EMP || 0) - (detailMap.get((a.career_match || '').toLowerCase())?.TOT_EMP || 0))[0];
+  const byEmployment = detailMap.get((byEmploymentCareer?.career_match || '').toLowerCase())?.TOT_EMP;
+
+  renderKPIs('v3kpis', [
+    { icon: '💰', label: 'Highest Salary Career', value: humanCareer(bySalary?.career_match), foot: bySalary?.A_MEDIAN ? `${moneyShort(bySalary.A_MEDIAN)} estimated` : 'Salary unavailable' },
+    { icon: '🛡️', label: 'Safest from Automation', value: humanCareer(bySafety?.career_match), foot: bySafety?.automation_probability != null ? `${Math.round((1 - bySafety.automation_probability) * 100)}% safety` : 'Safety unavailable' },
+    { icon: '💼', label: 'Highest Employment Career', value: humanCareer(byEmploymentCareer?.career_match), foot: byEmployment ? `${Math.round(byEmployment / 1000000 * 100) / 100}M employed` : 'Employment unavailable' },
+    { icon: '🏆', label: 'Best Overall GCSI Career', value: humanCareer(byOverall?.career_match), foot: byOverall?.GCSI != null ? `GCSI ${byOverall.GCSI.toFixed(1)}` : 'GCSI unavailable' }
+  ]);
+
+  renderSalaryRanking(items);
+  renderAutoRanking(items);
+  renderEmploymentRanking(detailMap, items);
+  renderScatterFromRecommendations('v3scatter', items);
+  renderRecommendationList(recs);
+  renderCareerTable('v3table', items, detailMap);
+  renderProgramInsight(recs, detailMap);
+}
+
+function setupNav() {
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.view).classList.add('active');
+    });
+  });
+}
+
+async function init() {
+  setupNav();
+  updateHeadingText();
+
+  const fields = await loadFields();
+  await buildV1();
+  populateFieldSelects(fields);
+
+  const v2select = document.getElementById('v2select');
+  const v3select = document.getElementById('v3select');
+  const v3programSelect = document.getElementById('v3programSelect');
+
+  const defaultField = fields.find(f => f.broad_field === 'Computing & Technology')?.broad_field || fields[0]?.broad_field || '';
+  if (v2select) v2select.value = defaultField;
+  if (v3select) v3select.value = defaultField;
+
+  if (defaultField) {
+    await buildV2(defaultField);
+
+    const programs = await loadProgramsForField(defaultField);
+    if (v3programSelect) {
+      v3programSelect.innerHTML = '<option value="">Select your program</option>';
+      programs.forEach(program => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify({ program_name: program.program_name, program_type: program.program_type });
+        option.textContent = `${program.program_name} (${program.program_type})`;
+        v3programSelect.appendChild(option);
+      });
+      const defaultProgram = programs[0];
+      if (defaultProgram) {
+        v3programSelect.value = JSON.stringify({ program_name: defaultProgram.program_name, program_type: defaultProgram.program_type });
+        await buildV3Program(defaultProgram.program_name, defaultProgram.program_type);
+      }
+    }
+  }
+
+  if (v2select) {
+    v2select.addEventListener('change', async (e) => {
+      await buildV2(e.target.value);
+    });
+  }
+
+  if (v3select && v3programSelect) {
+    v3select.addEventListener('change', async function () {
+      const fieldName = this.value;
+      v3programSelect.innerHTML = '<option value="">Loading programs...</option>';
+      if (!fieldName) return;
+      const programs = await loadProgramsForField(fieldName);
+      v3programSelect.innerHTML = '<option value="">Select your program</option>';
+      programs.forEach(program => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify({ program_name: program.program_name, program_type: program.program_type });
+        option.textContent = `${program.program_name} (${program.program_type})`;
+        v3programSelect.appendChild(option);
+      });
+      renderKPIs('v3kpis', []);
+      ['v3salaryRank','v3autoRank','v3employmentRank','v3matches','v3table'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+      });
+      const scatter = document.getElementById('v3scatter');
+      if (scatter) scatter.innerHTML = '';
+      const insight = document.getElementById('v3insight');
+      if (insight) insight.innerHTML = 'Select a program to load career path recommendations.';
+    });
+  }
+
+  if (v3programSelect) {
+    v3programSelect.addEventListener('change', async function () {
+      const selectedValue = this.value;
+      if (!selectedValue) return;
+      const parsed = JSON.parse(selectedValue);
+      await buildV3Program(parsed.program_name, parsed.program_type);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
